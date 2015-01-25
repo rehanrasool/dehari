@@ -1,0 +1,131 @@
+
+.navbar-fixed-top{
+	background-color: white;
+
+}
+
+.navbar-fixed-top .nav {
+    padding: 15px 0;
+
+}
+
+.navbar-fixed-top .navbar-brand {
+    padding: 0 15px;
+
+}
+
+#bs-example-navbar-collapse-1 {
+	text-align: right;
+}
+
+#bs-example-navbar-collapse-1 a  {
+	padding-top: 40px;
+	color: black;
+	font-size: 20px;
+}
+
+#bs-example-navbar-collapse-1 a:hover  {
+	color: #B23A3C;
+}
+
+.navbar-default .nav li a {
+    text-transform: uppercase;
+    font-family: 'Open Sans', sans-serif;
+    font-weight: 600;
+    letter-spacing: 1px;
+    color: #fff;
+}
+
+@media(min-width:768px) {
+    body {
+        padding-top: 100px; /* Required padding for .navbar-fixed-top. Change if height of navigation changes. */
+    }
+
+    .navbar-fixed-top .navbar-brand {
+        padding: 15px 0;
+    }
+
+
+}
+
+@media(max-width:768px) {
+	.navbar-fixed-top{
+		background-color: white;
+		height:80px;
+	}
+
+	#bs-example-navbar-collapse-1 {
+		border-width: 0px;
+	}
+
+    #bs-example-navbar-collapse-1 a  {
+    	border-radius: 10px;
+		padding-top: 7px;
+		margin-bottom: 7px;
+		color: white;
+		font-weight: bold;
+		font-size: 20px;
+		background-color: black;
+	}
+
+}
+
+
+
+
+
+
+
+.index_main_area {
+	background-color: white;
+	border-radius: 10px;
+}
+
+
+
+
+
+
+
+
+header {
+    text-align: center;
+    color: #fff;
+    background-attachment: scroll;
+    background-image: url(../images/index_bg.jpg);
+    background-position: center center;
+    background-repeat: none;
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    background-size: cover;
+    -o-background-size: cover;
+    height: 500px;
+}
+
+header .intro-text {
+    padding-top: 100px;
+    padding-bottom: 50px;
+}
+
+header .intro-text .intro-lead-in {
+    margin-bottom: 25px;
+    font-size: 22px;
+    font-style: italic;
+    line-height: 22px;
+}
+
+header .intro-text .intro-heading {
+    margin-bottom: 25px;
+    text-transform: uppercase;
+    font-size: 50px;
+    font-weight: 700;
+    line-height: 50px;
+}
+
+section {
+    padding: 80px 0;
+    height: auto;
+}
+
+
+

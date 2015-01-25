@@ -1,0 +1,71 @@
+body {
+	text-decoration: none;
+}
+
+#find_dehari_form {
+	padding-top: 20px;
+}
+
+#search_button {
+	color: white;
+	width: 100%;
+	background-color: #B23A3C;
+	border-width: 0px;
+}
+
+footer {
+	position: fixed;
+	margin-top: 10px;
+    z-index: 10;
+	clear: both;
+}
+
+.popup_style .ui-widget-header{
+  background: #B23A3C;
+  color: white;
+}
+
+#post_dehari_error {
+	color: #B23A3C;
+	text-align: center;
+}
+
+hr {
+	width: 100%;
+}
+
+#dehari_description_popup {
+	margin-top: 10px;
+}
+
+#select_dehari_button {
+	color: white;
+	width: 100%;
+	background-color: #22544B;
+	border-width: 0px;
+}
+
+#cancel_dehari_button {
+	color: white;
+	width: 100%;
+	background-color: #B23A3C;
+	border-width: 0px;
+}
+
+input[type="text"], [type="number"], input[type="textarea"], select {
+	border-color: black;
+	width: 100%;
+	border-width: 1px;
+  	background-color : transparent; 
+    padding-left: 5px;
+}
+
+::-webkit-input-placeholder { /* WebKit browsers */
+    font-style: italic;
+    color: #B23A3C;
+    font-size: default;
+}
+
+.ui-dialog-titlebar-close {
+  visibility: hidden;
+}

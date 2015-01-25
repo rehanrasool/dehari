@@ -1,0 +1,125 @@
+
+
+
+#incoming_search_button {
+	color: white;
+	width: 100%;
+	background-color: #B23A3C;
+	border-width: 0px;
+}
+
+#outgoing_search_button {
+	color: white;
+	width: 100%;
+	background-color: #BA8A76;
+	border-width: 0px;
+}
+
+
+#incoming_bids_submitted_popup {
+	margin-top: 10px;
+}
+
+#incoming_bids_submitted_update_dehari_button, #incoming_in_progress_send_button, #incoming_in_progress_mark_complete_button, #outgoing_in_progress_mark_complete_button, #outgoing_in_progress_send_button {
+	color: white;
+	width: 100%;
+	background-color: #22544B;
+	border-width: 0px;
+}
+
+#incoming_bids_submitted_close_dehari_button, #outgoing_posted_close_dehari_button, #outgoing_bids_received_close_dehari_button, #incoming_in_progress_close_dehari_button, #incoming_completed_close_dehari_button, #outgoing_in_progress_close_dehari_button, #outgoing_completed_close_dehari_button {
+	color: white;
+	width: 100%;
+	background-color: #B23A3C;
+	border-width: 0px;
+}
+
+.ui-dialog-titlebar-close {
+  visibility: hidden;
+}
+
+
+
+
+
+
+
+
+.navbar-fixed-top{
+	background-color: #22544B;
+
+}
+
+.navbar-fixed-top .nav {
+    padding: 15px 0;
+
+}
+
+.navbar-fixed-top .navbar-brand {
+    padding: 0 15px;
+
+}
+
+#bs-example-navbar-collapse-1 {
+	text-align: right;
+}
+
+#bs-example-navbar-collapse-1 a  {
+	padding-top: 40px;
+	color: white;
+	font-size: 20px;
+}
+
+#bs-example-navbar-collapse-1 a:hover  {
+	color: #E9E9E9;
+	text-decoration: none;
+}
+
+.navbar-default .nav li a {
+    text-transform: uppercase;
+    font-family: 'Open Sans', sans-serif;
+    font-weight: 600;
+    letter-spacing: 1px;
+    color: #fff;
+}
+
+@media(min-width:768px) {
+    body {
+        padding-top: 100px; /* Required padding for .navbar-fixed-top. Change if height of navigation changes. */
+    }
+
+    .navbar-fixed-top .navbar-brand {
+        padding: 15px 0;
+    }
+
+
+}
+
+@media(max-width:768px) {
+	.navbar-fixed-top{
+		background-color: white;
+		height:80px;
+	}
+
+	#bs-example-navbar-collapse-1 {
+		border-width: 0px;
+	}
+
+    #bs-example-navbar-collapse-1 a  {
+    	border-radius: 10px;
+		padding-top: 7px;
+		margin-bottom: 7px;
+		color: white;
+		font-weight: bold;
+		font-size: 20px;
+		background-color: black;
+	}
+
+}
+
+
+
+section {
+    padding: 50px 0;
+    height: auto;
+}

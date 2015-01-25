@@ -1,0 +1,47 @@
+#post_dehari_form {
+	padding-top: 20px;
+}
+
+#description_area {
+	padding-top: 10px;
+
+}
+
+#description_area input[type="text"] {
+	height: 200px;
+	
+} 
+
+#post_button {
+	color: white;
+	width: 25%;
+	float: right;
+	background-color: #B23A3C;
+	border-width: 0px;
+}
+
+input[type="text"], select {
+	border-color: black;
+	width: 100%;
+	border-width: 1px;
+  	background-color : transparent; 
+    padding-left: 5px;
+}
+
+select {
+	height: 25px;
+}
+
+#container {
+	font-size: 15px;
+}
+
+textarea
+{
+    width:100%;
+}
+
+#post_dehari_error {
+	color: #B23A3C;
+	text-align: center;
+}
