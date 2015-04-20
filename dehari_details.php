@@ -149,8 +149,8 @@
             $bids_array[$bid_user_id] = array();
             $bids_array[$bid_user_id]['dehari_id'] = $dehari_id;
             $bids_array[$bid_user_id]['bid_user_id'] = $bid_user_id;
-            $bids_array[$bid_user_id]['bid_value'] = $bid_value;
-            $bids_array[$bid_user_id]['bid_message'] = "Message Goes Here";
+            $bids_array[$bid_user_id]['bid_value'] = $dehari_bids[$bid_user_id]['bid'];
+            $bids_array[$bid_user_id]['bid_message'] = $dehari_bids[$bid_user_id]['message'];
 
             $query = 'SELECT * FROM dehari_user WHERE user_id = ' . $bid_user_id;
 
@@ -225,10 +225,10 @@
                     <? if ($user_id != $dehari_user_id) {?>
                     <form class="form-inline" method="post" action="server/find_dehari.php">
                         <div class="col-md-2">
-                            <input type="number" min="1" name="dehari_bid" placeholder="Enter Bid">
+                            <input type="number" min="1" name="dehari_bid" placeholder="Enter Bid" required>
                         </div>
                         <div class="col-md-8">
-                            <input type="textarea" name="dehari_bid_message" value="" placeholder="Enter Message for Client">
+                            <input type="textarea" name="dehari_bid_message" value="" placeholder="Enter Message for Client" required>
                         </div>
                         <div>
                             <input name="dehari_id" type="hidden" value="<?=$dehari_id?>">
@@ -310,6 +310,8 @@
                                 <?} else {?>
                                     &nbsp;
                                 <?}?>
+                            <?} else {?>
+                                &nbsp;
                             <?}?>
                         </div>
                     </form>

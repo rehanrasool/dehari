@@ -521,7 +521,7 @@
 		mysql_select_db('bluecu6_dehari', $db_dehari);
 
 		$dehari_user_id = $_SESSION['user_id'];
-		$dehari_bid_formatted = '{"' . $dehari_user_id . '":' . $dehari_bid . '},';
+		$dehari_bid_formatted = '{"' . $dehari_user_id . '":{"' . $dehari_bid . '":"' . $dehari_bid_message . '"}},';
 		$dehari_bid_formatted = mysql_real_escape_string($dehari_bid_formatted);
 
 		$query = 'UPDATE dehari_list SET dehari_bids = CONCAT(dehari_bids,"' . $dehari_bid_formatted . '") WHERE dehari_id = ' . $dehari_id;
@@ -614,8 +614,11 @@
 			$result_array_objects  = json_decode($trimmed_dehari_bids,true);
 
 			foreach ($result_array_objects as $key => $val) {
-				foreach ($val as $key_id => $val_bid) {
-				$result_array['dehari_bids_array'][$key_id] = $val_bid;
+				foreach ($val as $key_id => $bid_message_tuple) {
+						foreach ($bid_message_tuple as $bid_val => $bid_message) {
+							$result_array['dehari_bids_array'][$key_id]['bid'] = $bid_val;
+							$result_array['dehari_bids_array'][$key_id]['message'] = $bid_message;
+						}
 				}
 			}
 
