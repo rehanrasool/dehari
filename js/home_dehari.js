@@ -4,63 +4,138 @@ $(document).ready(function() {
 	var dehariID;
 
     // DataTable
-    var incoming_table = $('.incoming_dehari_table').DataTable({
-        "lengthMenu": [[6, 25, 50, -1], [6, 25, 50, "All"]],
+    var worker_table = $('.incoming_dehari_table').DataTable({
+        "lengthMenu": [[7, 25, 50, -1], [7, 25, 50, "All"]],
         "dom": '<"top">rt<"bottom"ip><"clear">'
     });
 
-    var outgoing_table = $('.outgoing_dehari_table').DataTable({
-        "lengthMenu": [[6, 25, 50, -1], [6, 25, 50, "All"]],
+    var client_table = $('.outgoing_dehari_table').DataTable({
+        "lengthMenu": [[7, 25, 50, -1], [7, 25, 50, "All"]],
         "dom": '<"top">rt<"bottom"ip><"clear">'
     });
 
 
     $("#worker_mode_button").click(function() {
+		$.ajax
+        ({
+          type: "POST",
+          //the url where you want to sent the userName and password to
+          url: "server/find_dehari.php",
+          //json object to sent to the authentication url
+          data : {
+          select_user_mode: 1,
+          mode : 'worker'
+        } }).done(function(raw_data) {
+
+          if ($.trim(raw_data) === "success") {
+          	console.log('set');
+          } else {
+          	console.log('failed');
+          }
+      	});
         $("#client_table_section").hide("slow");
         $("#worker_table_section").show("slow");
+        $('html, body').stop().animate({
+            scrollTop: $('#worker_table_section').offset().top
+        }, 1500, 'easeInOutExpo');
     });
 
     $("#client_mode_button").click(function() {
+		$.ajax
+        ({
+          type: "POST",
+          //the url where you want to sent the userName and password to
+          url: "server/find_dehari.php",
+          //json object to sent to the authentication url
+          data : {
+          select_user_mode: 1,
+          mode : 'client'
+        } }).done(function(raw_data) {
+
+          if ($.trim(raw_data) === "success") {
+          	console.log('set');
+          } else {
+          	console.log('failed');
+          }
+      	});
         $("#worker_table_section").hide("slow");
         $("#client_table_section").show("slow");
+        $('html, body').stop().animate({
+            scrollTop: $('#client_table_section').offset().top
+        }, 1500, 'easeInOutExpo');
     });
-
  
-	$('#outgoing_search_button').click(function() {
-
-		outgoing_table.columns().eq( 0 ).each( function ( colIdx ) {
-	        var title_search_val = $('#outgoing_dehari_title').val();
+	$('#client_dehari_search').on('input', function() {
+		var title_search_val = $(this).val();
+		client_table.columns().eq( 0 ).each( function ( colIdx ) {
+	        
 	        var category_search_val = $('#outgoing_dehari_status').val();
 			
-			outgoing_table.column( 0 ).search( title_search_val ).draw();
-			outgoing_table.column( 4 ).search( category_search_val ).draw();
+			client_table.column( 0 ).search( title_search_val ).draw();
+			client_table.column( 4 ).search( category_search_val ).draw();
 	    } );
 	});
 
-	$('#clear_outgoing_search_button').click(function() {
-			
-		$('#outgoing_dehari_title').val("");
-	    $('#outgoing_dehari_status').val("");
-
-	});
-
-    $('#incoming_search_button').click(function() {
-
-		incoming_table.columns().eq( 0 ).each( function ( colIdx ) {
-	        var title_search_val = $('#incoming_dehari_title').val();
+    $('#worker_dehari_search').on('input', function() {
+    	var title_search_val = $(this).val();
+		worker_table.columns().eq( 0 ).each( function ( colIdx ) {
+	        
 	        var category_search_val = $('#incoming_dehari_status').val();
 			
-			incoming_table.column( 0 ).search( title_search_val ).draw();
-			incoming_table.column( 4 ).search( category_search_val ).draw();
+			worker_table.column( 0 ).search( title_search_val ).draw();
+			worker_table.column( 4 ).search( category_search_val ).draw();
 	    } );
 	});
 
-	$('#clear_incoming_search_button').click(function() {
-			
-		$('#incoming_dehari_title').val("");
-	    $('#incoming_dehari_status').val("");
+	$('.client_dehari_filter_buttons').click( function() {
+    	var title_search_val = $('#client_dehari_search').val();
+		var category_search_val = ($(this).val() == 'ALL')? '': $(this).val();
 
+    	$('.client_dehari_filter_buttons').each( function() {
+    		if ($(this).hasClass("red_button")) {
+    			$(this).removeClass("red_button").addClass("brown_button");
+    		}
+    	});
+
+    	$(this).removeClass("brown_button").addClass("red_button");
+
+		client_table.columns().eq( 0 ).each( function ( colIdx ) {
+	        
+			client_table.column( 0 ).search( title_search_val ).draw();
+			client_table.column( 4 ).search( category_search_val ).draw();
+	    } );
 	});
+
+	$('.worker_dehari_filter_buttons').click( function() {
+    	var title_search_val = $('#worker_dehari_search').val();
+		var category_search_val = ($(this).val() == 'ALL')? '': $(this).val();
+
+    	$('.worker_dehari_filter_buttons').each( function() {
+    		if ($(this).hasClass("red_button")) {
+    			$(this).removeClass("red_button").addClass("brown_button");
+    		}
+    	});
+
+    	$(this).removeClass("brown_button").addClass("red_button");
+
+		worker_table.columns().eq( 0 ).each( function ( colIdx ) {
+	        
+			worker_table.column( 0 ).search( title_search_val ).draw();
+			worker_table.column( 4 ).search( category_search_val ).draw();
+	    } );
+	});
+
+
+
+
+
+
+
+
+
+
+
+
 
 	$('#incoming_bids_submitted_update_dehari_button').click(function() {
 		

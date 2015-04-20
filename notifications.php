@@ -6,19 +6,44 @@
     $user_id = $_SESSION['user_id'];
     $user_name = $_SESSION['user_name'];
 
+
+
     // get notifications
     $db_dehari = mysql_connect('localhost','bluecu6_rehan','.dehari.');
         mysql_select_db('bluecu6_dehari', $db_dehari);
 
-    $query = 'SELECT COUNT(*) as notifications_count FROM dehari_notifications WHERE notification_read = 0 AND notification_user_id = ' . $user_id;
+    $query = 'SELECT * FROM dehari_notifications WHERE notification_read = 0 AND notification_user_id = ' . $user_id;
 
     // Perform Query
     $result = mysql_query($query, $db_dehari);
-    $result_array = mysql_fetch_assoc($result);
 
-    $notifications_count = $result_array['notifications_count'];
+    $notification_list = array();
+    while ($notification_list_row = mysql_fetch_assoc($result))
+            $notification_list[] = $notification_list_row;
+
+    // get old 10
+    $query_old = 'SELECT * FROM dehari_notifications WHERE notification_read = 1 AND notification_user_id = ' . $user_id . ' ORDER BY notification_timestamp LIMIT 10';
+    // Perform Query
+    $result_old = mysql_query($query_old, $db_dehari);
+
+    $notification_list_old = array();
+    while ($notification_list_old_row = mysql_fetch_assoc($result_old))
+            $notification_list_old[] = $notification_list_old_row;
+
+
+    // mark notifications read
+    $query_update = 'UPDATE dehari_notifications SET notification_read = 1 WHERE notification_user_id = ' . $user_id;
+
+    // Perform Query
+    $result_update = mysql_query($query_update, $db_dehari);
+
+    if (!$result_update) {
+        $message  = 'Invalid query: ' . mysql_error() . "\n";
+        $message .= 'Whole query: ' . $query_update_outgoing;
+        
+    } 
+
 ?>
-
 <!DOCTYPE html>
 <html lang="en">
 
@@ -30,7 +55,7 @@
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>Dehari - Post</title>
+    <title>Dehari - Notifications</title>
 
     <!-- Bootstrap Core CSS -->
     <link href="css/bootstrap.min.css" rel="stylesheet">
@@ -80,7 +105,7 @@
                         <a href="#">messages</a>
                     </li>
                     <li>
-                        <a href="notifications.php">notifications<?=($notifications_count > 0)? '(' . $notifications_count . ')': '' ?></a>
+                        <a href="notifications.php">notifications</a>
                     </li>
                     <li>
                         <a data-toggle="dropdown" href="#" role="button" aria-expanded="false"><span class="glyphicon glyphicon-cog" aria-hidden="true"></span></a>
@@ -101,67 +126,46 @@
     </nav>
 
 
-    <!-- Main Profile Section -->
-    <section id="post_dehari_section">
+    <!-- Ratings & Mode Toggle Section -->
+    <section id="notifications_section">
         <div class="container">
-
-            <div class="row" id="post_dehari_form">
-                
-                <div class="col-md-6">
-                    Title
-                    <p><input type="text" id="dehari_title" value=""></p>
-
-                    Address 
-                    <p><input type="text" id="dehari_address" value=""></p>
-
-                    City 
-                    <select id="dehari_city">
-                      <option disabled selected value=""> Select your City </option>
-                      <option value="Islamabad">Islamabad</option>
-                      <option value="Karachi">Karachi</option>
-                      <option value="Lahore">Lahore</option>
-                      <option value="Peshawar">Peshawar</option>
-                      <option value="Rawalpindi">Rawalpindi</option>
-                    </select>
-                </div>
-                <div class="col-md-6">
-                    Category 
-                    <p><input type="text" id="dehari_category" value=""></p>
-
-                    Phone 
-                    <p><input type="text" id="dehari_phone" value=""></p>
-
-                    Budget (PKR)
-                    <select id="dehari_budget">
-                      <option disabled selected value=""> Select your Budget </option>
-                      <option value="100 to 200">100 to 200</option>
-                      <option value="200 to 500">200 to 500</option>
-                      <option value="500 to 1000">500 to 1000</option>
-                      <option value="1000 to 5000">1000 to 5000</option>
-                      <option value="5000+">5000+</option>
-                    </select>
-                </div>
-
-                <div class="col-md-12" id="description_area">
-                    Description 
-                    <p><textarea id="dehari_description" rows="5"></textarea></p>
-                </div>
-
-                <div class="col-md-12" id="post_dehari_error" class ="error_area">
-                </div>
-
+            <div class="row">
                 <div class="col-md-12">
-                     <input id="post_button" class="red_button" type="button" value="POST">
+                            <h3> new </h3>
+    <? foreach ($notification_list as $notification_row) { 
+
+                            $notification_message_string = explode(",", $notification_row['notification_message']);
+                            $notification_message = $notification_message_string[0];
+                            $notification_dehari_id = $notification_message_string[1];
+        ?>
+                            <p>
+                                <? echo $notification_message . ' <strong><a href="dehari_details.php?dehari_id=' . $notification_dehari_id . '">' . $notification_dehari_id . '</a></strong>'?>
+                            </p>
+    <? } ?>
                 </div>
-
             </div>
-
-        </div>
-        <!-- /.container -->
+        </div> 
     </section>
 
-    <div id="post_dehari_popup" title="Login Failed" style="display:none">
-    </div>
+    <section id="notifications_old_section" class="gray_background">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12">
+                            <h3> old </h3>
+    <? foreach ($notification_list_old as $notification_row) { 
+
+                            $notification_message_string = explode(",", $notification_row['notification_message']);
+                            $notification_message = $notification_message_string[0];
+                            $notification_dehari_id = $notification_message_string[1];
+        ?>
+                            <p>
+                                <? echo $notification_message . ' <strong><a href="dehari_details.php?dehari_id=' . $notification_dehari_id . '">' . $notification_dehari_id . '</a></strong>'?>
+                            </p>
+    <? } ?>
+                </div>
+            </div>
+        </div> 
+    </section>
 
     <footer>
         <div class="container">
@@ -195,16 +199,9 @@
         </div>
     </footer>
 
-
-
     <!-- jQuery -->
-    <script src="js/jquery.js"></script>
     <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js" type="text/javascript"></script>
-    
-    <link rel="stylesheet" href="https://code.jquery.com/ui/1.11.0/themes/smoothness/jquery-ui.css">
-    <script src="https://code.jquery.com/jquery-1.10.2.js"></script>
-    <script src="https://code.jquery.com/ui/1.11.0/jquery-ui.js"></script>
-    <script src="js/post_dehari.js"></script>
+
     <!-- Bootstrap Core JavaScript -->
     <script src="js/bootstrap.min.js"></script>
 

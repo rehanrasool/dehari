@@ -1,21 +1,4 @@
 
-
-
-#incoming_search_button {
-	color: white;
-	width: 100%;
-	background-color: #B23A3C;
-	border-width: 0px;
-}
-
-#outgoing_search_button {
-	color: white;
-	width: 100%;
-	background-color: #BA8A76;
-	border-width: 0px;
-}
-
-
 #incoming_bids_submitted_popup {
 	margin-top: 10px;
 }
@@ -81,6 +64,10 @@
     font-weight: 600;
     letter-spacing: 1px;
     color: #fff;
+}
+
+.dropdown-menu {
+	background-color: #22544B;
 }
 
 @media(min-width:768px) {

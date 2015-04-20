@@ -18,7 +18,6 @@
 
     $notifications_count = $result_array['notifications_count'];
 ?>
-
 <!DOCTYPE html>
 <html lang="en">
 
@@ -30,7 +29,7 @@
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>Dehari - Post</title>
+    <title>Dehari - Settings</title>
 
     <!-- Bootstrap Core CSS -->
     <link href="css/bootstrap.min.css" rel="stylesheet">
@@ -80,7 +79,7 @@
                         <a href="#">messages</a>
                     </li>
                     <li>
-                        <a href="notifications.php">notifications<?=($notifications_count > 0)? '(' . $notifications_count . ')': '' ?></a>
+                        <a href="notifications.php">notifications</a>
                     </li>
                     <li>
                         <a data-toggle="dropdown" href="#" role="button" aria-expanded="false"><span class="glyphicon glyphicon-cog" aria-hidden="true"></span></a>
@@ -101,67 +100,29 @@
     </nav>
 
 
-    <!-- Main Profile Section -->
-    <section id="post_dehari_section">
+    <!-- Ratings & Mode Toggle Section -->
+    <section id="settings_section">
         <div class="container">
-
-            <div class="row" id="post_dehari_form">
-                
-                <div class="col-md-6">
-                    Title
-                    <p><input type="text" id="dehari_title" value=""></p>
-
-                    Address 
-                    <p><input type="text" id="dehari_address" value=""></p>
-
-                    City 
-                    <select id="dehari_city">
-                      <option disabled selected value=""> Select your City </option>
-                      <option value="Islamabad">Islamabad</option>
-                      <option value="Karachi">Karachi</option>
-                      <option value="Lahore">Lahore</option>
-                      <option value="Peshawar">Peshawar</option>
-                      <option value="Rawalpindi">Rawalpindi</option>
-                    </select>
-                </div>
-                <div class="col-md-6">
-                    Category 
-                    <p><input type="text" id="dehari_category" value=""></p>
-
-                    Phone 
-                    <p><input type="text" id="dehari_phone" value=""></p>
-
-                    Budget (PKR)
-                    <select id="dehari_budget">
-                      <option disabled selected value=""> Select your Budget </option>
-                      <option value="100 to 200">100 to 200</option>
-                      <option value="200 to 500">200 to 500</option>
-                      <option value="500 to 1000">500 to 1000</option>
-                      <option value="1000 to 5000">1000 to 5000</option>
-                      <option value="5000+">5000+</option>
-                    </select>
-                </div>
-
-                <div class="col-md-12" id="description_area">
-                    Description 
-                    <p><textarea id="dehari_description" rows="5"></textarea></p>
-                </div>
-
-                <div class="col-md-12" id="post_dehari_error" class ="error_area">
-                </div>
-
+            <div class="row">
                 <div class="col-md-12">
-                     <input id="post_button" class="red_button" type="button" value="POST">
+                    <? if ($_GET['success']) {?>
+                    <div class="error_area"><?=(($_GET['success']==1)? 'Update Successfull!': 'Update unsuccessfull!')?></div>
+                    <?}?>
+                    <form action="server/settings.php" method="post" enctype="multipart/form-data">
+                        Select profile image to upload:
+                        <input type="file" name="settings_image" id="settings_image">
+                        Enter full name:
+                        <input type="text" name="settings_full_name" id="settings_full_name">
+                        Enter Description:
+                        <input type="text" name="settings_description" id="settings_description">
+                        <input type="hidden" name="settings_user_id" value="<?=$user_id?>">
+                        <input type="submit" value="UPDATE" class="red_button" name="settings_change">
+                    </form>
                 </div>
-
             </div>
-
-        </div>
-        <!-- /.container -->
+        </div> 
     </section>
 
-    <div id="post_dehari_popup" title="Login Failed" style="display:none">
-    </div>
 
     <footer>
         <div class="container">
@@ -195,16 +156,9 @@
         </div>
     </footer>
 
-
-
     <!-- jQuery -->
-    <script src="js/jquery.js"></script>
     <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js" type="text/javascript"></script>
-    
-    <link rel="stylesheet" href="https://code.jquery.com/ui/1.11.0/themes/smoothness/jquery-ui.css">
-    <script src="https://code.jquery.com/jquery-1.10.2.js"></script>
-    <script src="https://code.jquery.com/ui/1.11.0/jquery-ui.js"></script>
-    <script src="js/post_dehari.js"></script>
+
     <!-- Bootstrap Core JavaScript -->
     <script src="js/bootstrap.min.js"></script>
 

@@ -1,13 +1,23 @@
 <?php
     session_start();
     if (!isset($_SESSION['user_id'])) {
-       // header("Location: index.html");
-       // exit();
+       header("Location: index.php");
     }
     $user_id = $_SESSION['user_id'];
     $user_name = $_SESSION['user_name'];
 
 
+    // get notifications
+    $db_dehari = mysql_connect('localhost','bluecu6_rehan','.dehari.');
+        mysql_select_db('bluecu6_dehari', $db_dehari);
+
+    $query = 'SELECT COUNT(*) as notifications_count FROM dehari_notifications WHERE notification_read = 0 AND notification_user_id = ' . $user_id;
+
+    // Perform Query
+    $result = mysql_query($query, $db_dehari);
+    $result_array = mysql_fetch_assoc($result);
+
+    $notifications_count = $result_array['notifications_count'];
 
 ?>
 
@@ -56,7 +66,7 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <a class="navbar-brand page-scroll main_header_button" href="#"><img src="images/logo_white.png" alt="Dehari" height="90"> </a>
+                <a class="navbar-brand page-scroll main_header_button" href="home_dehari.php"><img src="images/logo_white.png" alt="Dehari" height="90"> </a>
             </div>
 
             <!-- Collect the nav links, forms, and other content for toggling -->
@@ -75,7 +85,18 @@
                         <a href="#">messages</a>
                     </li>
                     <li>
-                        <a href="#">notifications</a>
+                        <a href="notifications.php">notifications<?=($notifications_count > 0)? '(' . $notifications_count . ')': '' ?></a>
+                    </li>
+                    <li>
+                        <a data-toggle="dropdown" href="#" role="button" aria-expanded="false"><span class="glyphicon glyphicon-cog" aria-hidden="true"></span></a>
+                        <ul class="dropdown-menu" role="menu">
+                          <li>
+                            <a href="settings.php">Settings</a>
+                          </li>
+                          <li>
+                            <a href="server/logout.php">Logout</a>
+                          </li>
+                        </ul>
                     </li>
                 </ul>
             </div>
@@ -101,6 +122,19 @@
         // Perform Query
         $result_user = mysqli_query($db_dehari, $query_user);
         $result_user_array = mysqli_fetch_assoc($result_user);
+
+
+        if ($result_user_array['user_full_name'] == '') {
+            $user_full_name = 'Enter Full Name From Settings';
+        } else {
+            $user_full_name = $result_user_array['user_full_name'];
+        }
+
+        if ($result_user_array['user_description'] == '') {
+            $user_description = 'Enter Description From Settings';
+        } else {
+            $user_description = $result_user_array['user_description'];
+        }
 
 
         // INCOMING
@@ -197,58 +231,66 @@
     <section id="home_profile">
         <div class="container">
             <div class="row">
-                <div class="col-md-2">
-                    <img src="images/profile_pic.png" alt="profile_pic" height="150">
-                </div>
-
-                <div class="col-md-10">
-                    <h2>
-                      <?=$user_name?>
-                    </h2>
-
-                    <h3>
-                      <?=$user_name?>
-                    </h3>
-
-                    <h4>
-                        Lorem ipsum dolor sit amet, quo choro eleifend in. Ad sit idque debet antiopam, no stet noluisse phaedrum eum. Per exerci facilisis ut. Sea cu mutat atomorum.
-                    </h4>
-                </div>
-            
-
-                <div class="col-md-3">
-                    <h3>
-                        worker rating:
-                        <br/>
-                        earnings:
-                    </h3> 
-                </div>
-                <div class="col-md-3">
-                    <h3>
-                        <? for ($i = 1; $i <= $user_incoming_rating; $i++) { ?>
-                                <span class="glyphicon glyphicon-star dehari_red" aria-hidden="true"></span>
-                        <? } ?>
+                <div class="col-md-12">
+                    <div class="col-md-2">
+                        <?if (file_exists ("images/profile/" . $user_id) !== false) {?>
+                            <img src=<?="images/profile/" . $user_id?> alt="profile_pic" height="150" width="150">
+                        <?} else {?>
+                            <img src="images/profile/0.png" alt="profile_pic" height="150" width="150">
+                        <?}?>
                         
-                        <br/>
-                        PKR <?=$user_incoming?>
-                    </h3> 
+                    </div>
+
+                    <div class="col-md-10">
+                        <h2>
+                          <?=$user_name?>
+                        </h2>
+
+                        <h3>
+                          <?=$user_full_name?>
+                        </h3>
+
+                        <h4>
+                            <?=$user_description?>
+                        </h4>
+                    </div>
                 </div>
-                <div class="col-md-3">
-                    <h3>
-                        client rating:
-                        <br/>
-                        expenditures:
-                    </h3>
-                </div>
-                <div class="col-md-3">
-                    <h3>
-                        <? for ($i = 1; $i <= $user_outgoing_rating; $i++) { ?>
-                                <span class="glyphicon glyphicon-star dehari_brown" aria-hidden="true"></span>
-                        <? } ?>
-                        
-                        <br/>
-                        PKR <?=$user_outgoing?>
-                    </h3>
+
+                <div class="col-md-12">
+                    <div class="col-md-3">
+                        <h3>
+                            worker rating:
+                            <br/>
+                            earnings:
+                        </h3> 
+                    </div>
+                    <div class="col-md-3">
+                        <h3>
+                            <? for ($i = 1; $i <= $user_incoming_rating; $i++) { ?>
+                                    <span class="glyphicon glyphicon-star dehari_red" aria-hidden="true"></span>
+                            <? } ?>
+                            
+                            <br/>
+                            PKR <?=$user_incoming?>
+                        </h3> 
+                    </div>
+                    <div class="col-md-3">
+                        <h3>
+                            client rating:
+                            <br/>
+                            expenditures:
+                        </h3>
+                    </div>
+                    <div class="col-md-3">
+                        <h3>
+                            <? for ($i = 1; $i <= $user_outgoing_rating; $i++) { ?>
+                                    <span class="glyphicon glyphicon-star dehari_brown" aria-hidden="true"></span>
+                            <? } ?>
+                            
+                            <br/>
+                            PKR <?=$user_outgoing?>
+                        </h3>
+                    </div>
                 </div>
             </div>
 
@@ -277,28 +319,40 @@
 
     <!-- Worker Section -->
     <section id="worker_table_section" hidden>
-            <div class="col-md-12" id="incoming_table_section">
+            <div class="col-md-12">
 
                 <center> <h2> WORKER MODE </h2> </center>
 
-                <div class="row" id="incoming_dehari_filters">
-                    <div class="col-md-4">
-                        Title:<input id="incoming_dehari_title" type="text"/>
+                <div class="row" id="worker_dehari_filters">
+                    <div class="col-md-2">
+                        <input id="worker_dehari_search" type="text" placeholder="Search"/>
                     </div>
-                    <div class="col-md-4">  
-                        Status:
-                        <select id="incoming_dehari_status">
+                    <div class="col-md-2">
+                        <input class="red_button worker_dehari_filter_buttons" type="button" value="ALL">
+                    </div>
+                    <div class="col-md-2">
+                        <input class="brown_button worker_dehari_filter_buttons" type="button" value="BIDS SUBMITTED">
+                    </div>
+                    <div class="col-md-2">
+                        <input class="brown_button worker_dehari_filter_buttons" type="button" value="IN PROGRESS">
+                    </div>
+                    <div class="col-md-2">
+                        <input class="brown_button worker_dehari_filter_buttons" type="button" value="COMPLETED">
+                    </div>
+
+                        <!--<select id="incoming_dehari_status">
                           <option selected value=""></option>
                           <option value="Bids Submitted">Bids Submitted</option>
                           <option value="Work In Progress">Work In Progress</option>
                           <option value="Work Completed">Work Completed</option>
                         </select>
-                    </div>
+
                      <div class="col-md-4">  
                         <a href="#clear" id="clear_incoming_search_button" title="clear filter">[clear]</a>
                         
                         <input id="incoming_search_button" type="button" value="SEARCH">
                     </div>
+                    -->
                 </div>
 
 
@@ -326,7 +380,7 @@
                     <tbody>
 <? foreach ($result_incoming_bids_array as $dehari_row) { ?>
                         <tr>
-                            <td><a href="#" class="incoming_bids_submitted_details" id="dehari_list_id_<?=$dehari_row['dehari_id']?>"><?=$dehari_row['dehari_title']?></a></td>
+                            <td><a href="dehari_details.php?dehari_id=<?=$dehari_row['dehari_id']?>" class="incoming_bids_submitted_details" id="dehari_list_id_<?=$dehari_row['dehari_id']?>"><?=$dehari_row['dehari_title']?></a></td>
                             <td><?=$dehari_row['dehari_category']?></td>
                             <td><?=$dehari_row['dehari_city']?></td>
                             <td data-value="78025368997"><?=(new DateTime($dehari_row['dehari_date']))->format('m/d/Y')?></td>
@@ -336,7 +390,7 @@
 
 <? foreach ($result_incoming_in_progress_array as $dehari_row) { ?>
                         <tr>
-                            <td><a href="#" class="incoming_in_progress_details" id="dehari_list_id_<?=$dehari_row['dehari_id']?>"><?=$dehari_row['dehari_title']?></a></td>
+                            <td><a href="dehari_details.php?dehari_id=<?=$dehari_row['dehari_id']?>" class="incoming_in_progress_details" id="dehari_list_id_<?=$dehari_row['dehari_id']?>"><?=$dehari_row['dehari_title']?></a></td>
                             <td><?=$dehari_row['dehari_category']?></td>
                             <td><?=$dehari_row['dehari_city']?></td>
                             <td data-value="78025368997"><?=(new DateTime($dehari_row['dehari_date']))->format('m/d/Y')?></td>
@@ -346,7 +400,7 @@
 
 <? foreach ($result_incoming_completed_array as $dehari_row) { ?>
                         <tr>
-                            <td><a href="#" class="incoming_completed_details" id="dehari_list_id_<?=$dehari_row['dehari_id']?>"><?=$dehari_row['dehari_title']?></a></td>
+                            <td><a href="dehari_details.php?dehari_id=<?=$dehari_row['dehari_id']?>" class="incoming_completed_details" id="dehari_list_id_<?=$dehari_row['dehari_id']?>"><?=$dehari_row['dehari_title']?></a></td>
                             <td><?=$dehari_row['dehari_category']?></td>
                             <td><?=$dehari_row['dehari_city']?></td>
                             <td data-value="78025368997"><?=(new DateTime($dehari_row['dehari_date']))->format('m/d/Y')?></td>
@@ -361,11 +415,31 @@
 
     <!-- Client Section -->
     <section id="client_table_section" hidden>    
-            <div class="col-md-12" id="outgoing_table_section">
+            <div class="col-md-12">
                 
                 <center> <h2> CLIENT MODE </h2> </center>
-                <div class="row" id="outgoing_dehari_filters">
-                    <div class="col-md-4">
+                <div class="row" id="client_dehari_filters">
+                    
+                    <div class="col-md-2">
+                        <input id="client_dehari_search" type="text" placeholder="Search"/>
+                    </div>
+                    <div class="col-md-2">
+                        <input class="red_button client_dehari_filter_buttons" type="button" value="ALL">
+                    </div>
+                    <div class="col-md-2">
+                        <input class="brown_button client_dehari_filter_buttons" type="button" value="POSTED">
+                    </div>
+                    <div class="col-md-2">
+                        <input class="brown_button client_dehari_filter_buttons" type="button" value="BIDS RECEIVED">
+                    </div>
+                    <div class="col-md-2">
+                        <input class="brown_button client_dehari_filter_buttons" type="button" value="IN PROGRESS">
+                    </div>
+                    <div class="col-md-2">
+                        <input class="brown_button client_dehari_filter_buttons" type="button" value="COMPLETED">
+                    </div>
+
+                    <!--<div class="col-md-4">
                         Title:<input id="outgoing_dehari_title" type="text"/>
                     </div>
                     <div class="col-md-4">  
@@ -383,6 +457,7 @@
                         
                         <input id="outgoing_search_button" type="button" value="SEARCH">
                     </div>
+                -->
                 </div>
 
 
@@ -411,7 +486,7 @@
 
 <? foreach ($result_outgoing_posted_array as $dehari_row) { ?>
                         <tr>
-                            <td><a href="#" class="outgoing_posted_details" id="dehari_list_id_<?=$dehari_row['dehari_id']?>"><?=$dehari_row['dehari_title']?></a></td>
+                            <td><a href="dehari_details.php?dehari_id=<?=$dehari_row['dehari_id']?>" class="outgoing_posted_details" id="dehari_list_id_<?=$dehari_row['dehari_id']?>"><?=$dehari_row['dehari_title']?></a></td>
                             <td><?=$dehari_row['dehari_category']?></td>
                             <td><?=$dehari_row['dehari_city']?></td>
                             <td data-value="78025368997"><?=(new DateTime($dehari_row['dehari_date']))->format('m/d/Y')?></td>
@@ -421,7 +496,7 @@
 
 <? foreach ($result_outgoing_bids_received_array as $dehari_row) { ?>
                         <tr>
-                            <td><a href="#" class="outgoing_bids_received_details" id="dehari_list_id_<?=$dehari_row['dehari_id']?>"><?=$dehari_row['dehari_title']?></a></td>
+                            <td><a href="dehari_details.php?dehari_id=<?=$dehari_row['dehari_id']?>" class="outgoing_bids_received_details" id="dehari_list_id_<?=$dehari_row['dehari_id']?>"><?=$dehari_row['dehari_title']?></a></td>
                             <td><?=$dehari_row['dehari_category']?></td>
                             <td><?=$dehari_row['dehari_city']?></td>
                             <td data-value="78025368997"><?=(new DateTime($dehari_row['dehari_date']))->format('m/d/Y')?></td>
@@ -431,7 +506,7 @@
 
 <? foreach ($result_outgoing_in_progress_array as $dehari_row) { ?>
                         <tr>
-                            <td><a href="#" class="outgoing_in_progress_details" id="dehari_list_id_<?=$dehari_row['dehari_id']?>"><?=$dehari_row['dehari_title']?></a></td>
+                            <td><a href="dehari_details.php?dehari_id=<?=$dehari_row['dehari_id']?>" class="outgoing_in_progress_details" id="dehari_list_id_<?=$dehari_row['dehari_id']?>"><?=$dehari_row['dehari_title']?></a></td>
                             <td><?=$dehari_row['dehari_category']?></td>
                             <td><?=$dehari_row['dehari_city']?></td>
                             <td data-value="78025368997"><?=(new DateTime($dehari_row['dehari_date']))->format('m/d/Y')?></td>
@@ -441,7 +516,7 @@
 
 <? foreach ($result_outgoing_completed_array as $dehari_row) { ?>
                         <tr>
-                            <td><a href="#" class="outgoing_completed_details" id="dehari_list_id_<?=$dehari_row['dehari_id']?>"><?=$dehari_row['dehari_title']?></a></td>
+                            <td><a href="dehari_details.php?dehari_id=<?=$dehari_row['dehari_id']?>" class="outgoing_completed_details" id="dehari_list_id_<?=$dehari_row['dehari_id']?>"><?=$dehari_row['dehari_title']?></a></td>
                             <td><?=$dehari_row['dehari_category']?></td>
                             <td><?=$dehari_row['dehari_city']?></td>
                             <td data-value="78025368997"><?=(new DateTime($dehari_row['dehari_date']))->format('m/d/Y')?></td>
@@ -507,6 +582,18 @@
     <script src="js/home_dehari.js" type="text/javascript"></script>
     <script src="js/jquery.dataTables.min.js" type="text/javascript"></script>
 
+<?
+    if ($_SESSION['user_mode'] == 'worker') {
+        echo "<script>$(document).ready(function(){";
+        echo "$(\"#worker_mode_button\").click();";
+        echo "});</script>";
+    } else if ($_SESSION['user_mode'] == 'client') {
+        echo "<script>$(document).ready(function(){";
+        echo "$(\"#client_mode_button\").click();";
+        echo "});</script>";
+    }
+    
+?>
     <!-- Bootstrap Core JavaScript -->
     <script src="js/bootstrap.min.js"></script>
 

@@ -1,3 +1,23 @@
+<?php
+    session_start();
+    if (!isset($_SESSION['user_id'])) {
+       header("Location: index.php");
+    }
+    $user_id = $_SESSION['user_id'];
+    $user_name = $_SESSION['user_name'];
+
+    // get notifications
+    $db_dehari = mysql_connect('localhost','bluecu6_rehan','.dehari.');
+        mysql_select_db('bluecu6_dehari', $db_dehari);
+
+    $query = 'SELECT COUNT(*) as notifications_count FROM dehari_notifications WHERE notification_read = 0 AND notification_user_id = ' . $user_id;
+
+    // Perform Query
+    $result = mysql_query($query, $db_dehari);
+    $result_array = mysql_fetch_assoc($result);
+
+    $notifications_count = $result_array['notifications_count'];
+?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -15,6 +35,7 @@
     <link href="css/bootstrap.min.css" rel="stylesheet">
 
     <!-- Custom CSS -->
+    <link href='http://fonts.googleapis.com/css?family=Open+Sans:600,400' rel='stylesheet' type='text/css'>
     <link href="css/home_dehari.css" rel="stylesheet">
     <link href="css/jquery.dataTables.css" rel="stylesheet" type="text/css" />
     
@@ -41,7 +62,7 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <a class="navbar-brand page-scroll main_header_button" href="#"><img src="images/logo_white.png" alt="Dehari" height="90"> </a>
+                <a class="navbar-brand page-scroll main_header_button" href="home_dehari.php"><img src="images/logo_white.png" alt="Dehari" height="90"> </a>
             </div>
 
             <!-- Collect the nav links, forms, and other content for toggling -->
@@ -60,7 +81,18 @@
                         <a href="#">messages</a>
                     </li>
                     <li>
-                        <a href="#">notifications</a>
+                        <a href="notifications.php">notifications<?=($notifications_count > 0)? '(' . $notifications_count . ')': '' ?></a>
+                    </li>
+                    <li>
+                        <a data-toggle="dropdown" href="#" role="button" aria-expanded="false"><span class="glyphicon glyphicon-cog" aria-hidden="true"></span></a>
+                        <ul class="dropdown-menu" role="menu">
+                          <li>
+                            <a href="settings.php">Settings</a>
+                          </li>
+                          <li>
+                            <a href="server/logout.php">Logout</a>
+                          </li>
+                        </ul>
                     </li>
                 </ul>
             </div>
@@ -109,9 +141,9 @@
 
                         </div> 
                          <div class="col-md-2">  
-                            <a href="#clear" id="clear_search_button" title="clear filter">[clear]</a>
+                            <a href="" id="clear_search_button" title="clear filter">[clear]</a>
                             </br>
-                            <input id="search_button" type="button" value="SEARCH">
+                            <input id="search_button" type="button" class="green_button" value="SEARCH">
                         </div>
                     </div>
 
@@ -122,7 +154,7 @@
         $db_dehari = mysql_connect('localhost','bluecu6_rehan','.dehari.');
             mysql_select_db('bluecu6_dehari', $db_dehari);
 
-            $query = 'SELECT * FROM dehari_list WHERE dehari_status = 0';
+            $query = 'SELECT * FROM dehari_list WHERE dehari_status = 0 AND dehari_user_id <> ' . $user_id;
 
             // Perform Query
             $result = mysql_query($query, $db_dehari);
@@ -156,7 +188,8 @@
                         <tbody>
     <? foreach ($dehari_list as $dehari_row) { ?>
                             <tr>
-                                <td><a href="#" class="dehari_details" id="dehari_list_id_<?=$dehari_row['dehari_id']?>"><?=$dehari_row['dehari_title']?></a></td>
+
+                                <td><a href="dehari_details.php?dehari_id=<?=$dehari_row['dehari_id']?>" id="dehari_list_id_<?=$dehari_row['dehari_id']?>"><?=$dehari_row['dehari_title']?></a></td>
                                 <td><?=$dehari_row['dehari_category']?></td>
                                 <td><?=$dehari_row['dehari_city']?></td>
                                 <td data-value="78025368997"><?=(new DateTime($dehari_row['dehari_date']))->format('m/d/Y')?></td>

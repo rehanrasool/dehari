@@ -31,6 +31,17 @@
     	die(mark_outgoing_dehari_completed($_POST['dehari_id'], $_POST['worker_rating']));
     }
 
+    if (isset($_POST['select_user_mode']) && isset($_POST['mode'])) {
+    	die(select_mode($_POST['mode']));
+    }
+
+    function select_mode ( $mode ) {
+    	$_SESSION['user_mode'] = $_POST['mode'];
+		if ($_SESSION['user_mode']) {
+			return 'success';
+		}
+		return 'failed';
+    }
 
 
 	function mark_outgoing_dehari_completed ( $dehari_id, $worker_rating ) {
@@ -136,13 +147,33 @@
 					    $message .= 'Whole query: ' . $query_update_incoming;
 					    
 						} else {
-							$message = 'success';
+							$notification_message = 'You have received a rating for,' . $dehari_id;
+
+							$query_send_notification = 'INSERT INTO dehari_notifications
+						    (notification_user_id, notification_message, notification_timestamp)
+						  VALUES
+						  	(' . $dehari_worker_id . ',"'
+						  	   . $notification_message . '",NOW())';
+
+							// Perform Query
+							$result_send_notification = mysql_query($query_send_notification, $db_dehari);
+
+
+							if (!$result_send_notification) {
+							    $message  = 'Invalid query: ' . mysql_error() . "\n";
+							    $message .= 'Whole query: ' . $query_update_outgoing;
+							    
+							} else {
+								$message = 'success';
+							}
 						}
 					}
 
 				}
 			}
 		}
+
+		header( 'Location: ../dehari_details.php?dehari_id=' . $dehari_id );
 
 		return $message;
     }
@@ -252,13 +283,33 @@
 					    $message .= 'Whole query: ' . $query_update_incoming;
 					    
 						} else {
-							$message = 'success';
+							$notification_message = 'You have received a rating for,' . $dehari_id;
+
+							$query_send_notification = 'INSERT INTO dehari_notifications
+						    (notification_user_id, notification_message, notification_timestamp)
+						  VALUES
+						  	(' . $dehari_client_id . ',"'
+						  	   . $notification_message . '",NOW())';
+
+							// Perform Query
+							$result_send_notification = mysql_query($query_send_notification, $db_dehari);
+
+
+							if (!$result_send_notification) {
+							    $message  = 'Invalid query: ' . mysql_error() . "\n";
+							    $message .= 'Whole query: ' . $query_update_outgoing;
+							    
+							} else {
+								$message = 'success';
+							}
 						}
 					}
 
 				}
 			}
 		}
+
+		header( 'Location: ../dehari_details.php?dehari_id=' . $dehari_id );
 
 		return $message;
     }
@@ -364,11 +415,31 @@
 				    $message .= 'Whole query: ' . $query_update_incoming;
 				    
 					} else {
-						$message = 'success';
+						$notification_message = 'Your bid has been selected for,' . $dehari_id;
+
+						$query_send_notification = 'INSERT INTO dehari_notifications
+					    (notification_user_id, notification_message, notification_timestamp)
+					  VALUES
+					  	(' . $dehari_bid_user_id . ',"'
+					  	   . $notification_message . '",NOW())';
+
+						// Perform Query
+						$result_send_notification = mysql_query($query_send_notification, $db_dehari);
+
+
+						if (!$result_send_notification) {
+						    $message  = 'Invalid query: ' . mysql_error() . "\n";
+						    $message .= 'Whole query: ' . $query_update_outgoing;
+						    
+						} else {
+							$message = 'success';
+						}
 					}
 				}
 			}
 		}
+
+		header( 'Location: ../dehari_details.php?dehari_id=' . $dehari_id );
 
 		return $message;
     }
@@ -488,10 +559,30 @@
 				    $message .= 'Whole query: ' . $query_update_outgoing;
 				    
 				} else {
-					$message = 'success';
+					$notification_message = 'You have received a bid on,' . $dehari_id;
+
+					$query_send_notification = 'INSERT INTO dehari_notifications
+				    (notification_user_id, notification_message, notification_timestamp)
+				  VALUES
+				  	(' . $dehari_client_id . ',"'
+				  	   . $notification_message . '",NOW())';
+
+					// Perform Query
+					$result_send_notification = mysql_query($query_send_notification, $db_dehari);
+
+
+					if (!$result_send_notification) {
+					    $message  = 'Invalid query: ' . mysql_error() . "\n";
+					    $message .= 'Whole query: ' . $query_update_outgoing;
+					    
+					} else {
+						$message = 'success';
+					}
 				}
 			}
 		}
+
+		header( 'Location: ../dehari_details.php?dehari_id=' . $dehari_id );
 
 		return $message;
     }
