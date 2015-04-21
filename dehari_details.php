@@ -82,7 +82,7 @@
                         <a href="post_dehari.php">post dehari</a>
                     </li>
                     <li>
-                        <a href="#">messages</a>
+                        <a href="messages.php">messages</a>
                     </li>
                     <li>
                         <a href="notifications.php">notifications<?=($notifications_count > 0)? '(' . $notifications_count . ')': '' ?></a>

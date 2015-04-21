@@ -632,4 +632,58 @@
 		return json_encode($result_array);
     }
 
+    function get_userid_from_username ( $username ) {
+
+    	$db_dehari = mysql_connect('localhost','bluecu6_rehan','.dehari.');
+		mysql_select_db('bluecu6_dehari', $db_dehari);
+
+		$query = 'SELECT * FROM dehari_user WHERE user_name = "' . $username . '";';
+
+		// Perform Query
+		$result = mysql_query($query, $db_dehari);
+
+		// Check result
+		// This shows the actual query sent to MySQL, and the error. Useful for debugging.
+
+		if (!$result) {
+		    $message  = 'Invalid query: ' . mysql_error() . "\n";
+		    $message .= 'Whole query: ' . $query;
+		    die($message);
+		} else {
+
+			$result_array = mysql_fetch_assoc($result);
+
+
+		}
+
+		return $result_array['user_id'];
+    }
+
+    function get_username_from_userid ( $userid ) {
+
+    	$db_dehari = mysql_connect('localhost','bluecu6_rehan','.dehari.');
+		mysql_select_db('bluecu6_dehari', $db_dehari);
+
+		$query = 'SELECT * FROM dehari_user WHERE user_id = ' . $userid . ';';
+
+		// Perform Query
+		$result = mysql_query($query, $db_dehari);
+
+		// Check result
+		// This shows the actual query sent to MySQL, and the error. Useful for debugging.
+
+		if (!$result) {
+		    $message  = 'Invalid query: ' . mysql_error() . "\n";
+		    $message .= 'Whole query: ' . $query;
+		    die($message);
+		} else {
+
+			$result_array = mysql_fetch_assoc($result);
+
+
+		}
+		
+		return $result_array['user_name'];
+    }
+
 ?>

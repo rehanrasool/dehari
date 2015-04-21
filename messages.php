@@ -1,5 +1,5 @@
 <?php
-	//test
+    include 'server/find_dehari.php';
     session_start();
     if (!isset($_SESSION['user_id'])) {
        header("Location: index.php");
@@ -30,7 +30,7 @@
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>Dehari - Settings</title>
+    <title>Dehari - Messages</title>
 
     <!-- Bootstrap Core CSS -->
     <link href="css/bootstrap.min.css" rel="stylesheet">
@@ -38,6 +38,8 @@
     <!-- Custom CSS -->
     <link href='http://fonts.googleapis.com/css?family=Open+Sans:600,400' rel='stylesheet' type='text/css'>
     <link href="css/home_dehari.css" rel="stylesheet">
+    <link href="css/jquery.dataTables.css" rel="stylesheet" type="text/css" />
+    
 
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
@@ -80,7 +82,7 @@
                         <a href="messages.php">messages</a>
                     </li>
                     <li>
-                        <a href="notifications.php">notifications</a>
+                        <a href="notifications.php">notifications<?=($notifications_count > 0)? '(' . $notifications_count . ')': '' ?></a>
                     </li>
                     <li>
                         <a data-toggle="dropdown" href="#" role="button" aria-expanded="false"><span class="glyphicon glyphicon-cog" aria-hidden="true"></span></a>
@@ -102,29 +104,76 @@
 
 
     <!-- Ratings & Mode Toggle Section -->
-    <section id="settings_section">
+    <section id="find_dehari_section">
         <div class="container">
-            <div class="row">
+            <div class="row" id="find_dehari_form">
                 <div class="col-md-12">
-                    <? if ($_GET['success']) {?>
-                        <? if ($_GET['success']==1) {?>
-                        <div class="success_area">Update Successfull! </div>
-                        <? } else {?>
-                            <div class="error_area">Update unsuccessfull! </div>
-                        <?}?>
-                    <?}?>
-                    <form action="server/settings.php" method="post" enctype="multipart/form-data">
-                        Select profile image to upload:
-                        <input type="file" name="settings_image" id="settings_image">
-                        Enter full name:
-                        <input type="text" name="settings_full_name" id="settings_full_name">
-                        Enter Description:
-                        <input type="text" name="settings_description" id="settings_description">
-                        <input type="hidden" name="settings_user_id" value="<?=$user_id?>">
-                        <input type="submit" value="UPDATE" class="red_button" name="settings_change">
-                    </form>
-                </div>
+                    
+                    <div class="col-md-3">  
+                        <input id="find_message_title" placeholder = "Title" type="text"/>
+                    </div>
+                    <div class="col-md-3">  
+                        <input id="find_message_user" placeholder = "Recipient" type="text"/>
+                    </div>
+                    <div class="col-md-3">  
+                        <input id="message_search_button" type="button" class="green_button" value="Search">
+                    </div>
+                    <div class="col-md-3">  
+                        <input id="new_message_button" type="button" class="green_button" value="New Message">
+                    </div>
             </div>
+            </div>
+
+                </br>
+
+
+    <?
+        $db_dehari = mysql_connect('localhost','bluecu6_rehan','.dehari.');
+            mysql_select_db('bluecu6_dehari', $db_dehari);
+
+            $query = 'SELECT * FROM dehari_conversation WHERE user1 = ' .  $user_id . ' OR user2 = ' . $user_id . ' ORDER BY time_stamp;';
+
+            // Perform Query
+            $result = mysql_query($query, $db_dehari);
+
+            $message_list = array();
+            while ($message_list_row = mysql_fetch_assoc($result))
+                    $message_list[] = $message_list_row;
+
+    ?>
+
+                    <table class="table message_table display" >
+                        <thead>
+                            <tr>
+                                <th data-sort-initial="true">
+                                    Title
+                                </th>
+                                <th data-sort="true">
+                                    Conversation With
+                                </th>
+                                <th data-hide="phone,tablet">
+                                    Time
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+    <? foreach ($message_list as $message_row) { ?>
+                            <tr>
+
+                                <td><a href="conversation.php?conversation_id=<?=$message_row['conversation_id']?>" ><?=$message_row['title']?></a></td>
+                                <td><? if ($user_id == $message_row['user1']) {
+                                        echo get_username_from_userid($message_row['user2']);
+                                    } else {
+                                        echo get_username_from_userid($message_row['user1']);
+                                    }?>
+                                </td>
+                                <td ><?=(new DateTime($message_row['time_stamp']))->format('m/d/Y')?></td>
+                            </tr>
+    <? } ?>
+                        </tbody>
+                    </table>
+                </div>
+            </div>   
         </div> 
     </section>
 
@@ -163,6 +212,14 @@
 
     <!-- jQuery -->
     <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js" type="text/javascript"></script>
+
+    <link rel="stylesheet" href="https://code.jquery.com/ui/1.11.0/themes/smoothness/jquery-ui.css">
+    <script src="https://code.jquery.com/jquery-1.10.2.js"></script>
+    <script src="https://code.jquery.com/ui/1.11.0/jquery-ui.js"></script>
+    
+
+    <script src="js/messages.js" type="text/javascript"></script>
+    <script src="js/jquery.dataTables.min.js" type="text/javascript"></script>
 
     <!-- Bootstrap Core JavaScript -->
     <script src="js/bootstrap.min.js"></script>
