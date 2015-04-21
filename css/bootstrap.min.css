@@ -133,6 +133,14 @@ footer li a:hover {
 	margin: 5px;
 }
 
+.success_area {
+	color: #004c00;
+	text-align: center;
+	background-color: #b2ffb2;
+	border-radius: 5px;
+	margin: 5px;
+}
+
 .gray_background {
 	background-color: #F3F3F3;
 }

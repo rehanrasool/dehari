@@ -50,9 +50,10 @@
 			if (!$result_update_outgoing) {
 			    $message  = 'Invalid query: ' . mysql_error() . "\n";
 			    $message .= 'Whole query: ' . $query_update_outgoing;
-			    
+			    header( 'Location: ../post_dehari.php?success=2' );
 			} else {
 				$message = 'success';
+				header( 'Location: ../post_dehari.php?success=1' );
 			}
 		}
 		return $message;

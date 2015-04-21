@@ -6,7 +6,8 @@ $(document).ready(function() {
     // DataTable
     var table = $('.dehari_table').DataTable({
         "lengthMenu": [[6, 25, 50, -1], [6, 25, 50, "All"]],
-        "dom": '<"top"i>rt<"bottom"p><"clear">'
+        "dom": '<"top"i>rt<"bottom"p><"clear">',
+        "order": [[ 3, "desc" ]]
     });
  
 

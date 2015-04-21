@@ -106,53 +106,59 @@
         <div class="container">
 
             <div class="row" id="post_dehari_form">
-                
-                <div class="col-md-6">
-                    Title
-                    <p><input type="text" id="dehari_title" value=""></p>
+                <? if ($_GET['success']) {?>
+                    <? if ($_GET['success']==1) {?>
+                        <div class="success_area">Post Successfull! </div>
+                    <? } else {?>
+                        <div class="error_area">Post unsuccessfull! </div>
+                    <?}?>
+                <?}?>
+                <form action="server/post_dehari.php" method="post">
+                    <div class="col-md-6">
+                        Title
+                        <p><input type="text" name="dehari_title" value="" required></p>
 
-                    Address 
-                    <p><input type="text" id="dehari_address" value=""></p>
+                        Address 
+                        <p><input type="text" name="dehari_address" value="" required></p>
 
-                    City 
-                    <select id="dehari_city">
-                      <option disabled selected value=""> Select your City </option>
-                      <option value="Islamabad">Islamabad</option>
-                      <option value="Karachi">Karachi</option>
-                      <option value="Lahore">Lahore</option>
-                      <option value="Peshawar">Peshawar</option>
-                      <option value="Rawalpindi">Rawalpindi</option>
-                    </select>
-                </div>
-                <div class="col-md-6">
-                    Category 
-                    <p><input type="text" id="dehari_category" value=""></p>
+                        City 
+                        <select name="dehari_city" required>
+                          <option disabled selected value=""> Select your City </option>
+                          <option value="Islamabad">Islamabad</option>
+                          <option value="Karachi">Karachi</option>
+                          <option value="Lahore">Lahore</option>
+                          <option value="Peshawar">Peshawar</option>
+                          <option value="Rawalpindi">Rawalpindi</option>
+                        </select>
+                    </div>
+                    <div class="col-md-6">
+                        Category 
+                        <p><input type="text" name="dehari_category" value="" required></p>
 
-                    Phone 
-                    <p><input type="text" id="dehari_phone" value=""></p>
+                        Phone 
+                        <p><input type="text" name="dehari_phone" value="" required></p>
 
-                    Budget (PKR)
-                    <select id="dehari_budget">
-                      <option disabled selected value=""> Select your Budget </option>
-                      <option value="100 to 200">100 to 200</option>
-                      <option value="200 to 500">200 to 500</option>
-                      <option value="500 to 1000">500 to 1000</option>
-                      <option value="1000 to 5000">1000 to 5000</option>
-                      <option value="5000+">5000+</option>
-                    </select>
-                </div>
+                        Budget (PKR)
+                        <select name="dehari_budget" required>
+                          <option disabled selected value=""> Select your Budget </option>
+                          <option value="100 to 200">100 to 200</option>
+                          <option value="200 to 500">200 to 500</option>
+                          <option value="500 to 1000">500 to 1000</option>
+                          <option value="1000 to 5000">1000 to 5000</option>
+                          <option value="5000+">5000+</option>
+                        </select>
+                    </div>
 
-                <div class="col-md-12" id="description_area">
-                    Description 
-                    <p><textarea id="dehari_description" rows="5"></textarea></p>
-                </div>
+                    <div class="col-md-12">
+                        Description 
+                        <p><textarea name="dehari_description" rows="5" required></textarea></p>
+                        <input type="hidden" name="postdata" value="1">
+                    </div>
 
-                <div class="col-md-12" id="post_dehari_error" class ="error_area">
-                </div>
-
-                <div class="col-md-12">
-                     <input id="post_button" class="red_button" type="button" value="POST">
-                </div>
+                    <div class="col-md-12">
+                         <input class="red_button" type="submit" value="POST">
+                    </div>
+                </form>
 
             </div>
 

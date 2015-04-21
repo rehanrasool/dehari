@@ -106,7 +106,11 @@
             <div class="row">
                 <div class="col-md-12">
                     <? if ($_GET['success']) {?>
-                    <div class="error_area"><?=(($_GET['success']==1)? 'Update Successfull!': 'Update unsuccessfull!')?></div>
+                        <? if ($_GET['success']==1) {?>
+                        <div class="success_area">Update Successfull! </div>
+                        <? } else {?>
+                            <div class="error_area">Update unsuccessfull! </div>
+                        <?}?>
                     <?}?>
                     <form action="server/settings.php" method="post" enctype="multipart/form-data">
                         Select profile image to upload:

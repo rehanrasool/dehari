@@ -12,16 +12,16 @@ if ($_FILES['settings_image']['name']) {
     $ext = substr($filename_complete, strpos($filename_complete,'.'), strlen($filename_complete)-1);
 
     if(!in_array($ext,$allowed_filetypes))
-      header( 'Location: ../settings.php?success=0' );
+      header( 'Location: ../settings.php?settings_image' );
 
     if(filesize($_FILES['settings_image']['tmp_name']) > $max_filesize)
-      header( 'Location: ../settings.php?success=0' );
+      header( 'Location: ../settings.php?settings_image' );
 
     if(!is_writable($upload_path))
-      header( 'Location: ../settings.php?success=0' );
+      header( 'Location: ../settings.php?success=2' );
 
     if(!move_uploaded_file($_FILES['settings_image']['tmp_name'],$upload_path . $user_id)) {
-         header( 'Location: ../settings.php?success=0' );
+         header( 'Location: ../settings.php?success=2' );
     }
 }
 
@@ -38,7 +38,7 @@ if ($_POST['settings_full_name']) {
     // This shows the actual query sent to MySQL, and the error. Useful for debugging.
 
     if (!$result) {
-        header( 'Location: ../settings.php?success=0' );
+        header( 'Location: ../settings.php?success=2' );
     } 
 }
 
@@ -51,7 +51,7 @@ if ($_POST['settings_description']) {
     // This shows the actual query sent to MySQL, and the error. Useful for debugging.
 
     if (!$result) {
-        header( 'Location: ../settings.php?success=0' );
+        header( 'Location: ../settings.php?settings_image' );
     } 
 }
 

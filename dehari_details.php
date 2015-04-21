@@ -204,6 +204,9 @@
                     <h4>
                       Budget:
                     </h4><?=$dehari_budget?>
+                    <h4>
+                      Posted By:
+                    </h4><a href="profile.php?user=<?=$dehari_user_id?>"><?=$dehari_user_id?></a>
                 </div>
 
             
@@ -287,7 +290,7 @@
                     <?=$bids_array[$bid_user_id]['bid_value']?>
                 </div>
                 <div class="col-md-2">
-                    <?=$bids_array[$bid_user_id]['bid_user_name']?>
+                    <a href="profile.php?user=<?=$bid_user_id?>"><?=$bids_array[$bid_user_id]['bid_user_name']?></a>
                 </div>
                 <div class="col-md-2">
                     <?=$bids_array[$bid_user_id]['bid_user_rating']?>
@@ -364,7 +367,7 @@
                     <?=$dehari_selected_bid_value?>
                 </div>
                 <div class="col-md-3">
-                    <?=$bids_array[$dehari_selected_user_id]['bid_user_name']?>
+                    <a href="profile.php?user=<?=$dehari_selected_user_id?>"><?=$bids_array[$dehari_selected_user_id]['bid_user_name']?></a>
                 </div>
                 <div class="col-md-3">
                     <?=$bids_array[$dehari_selected_user_id]['bid_user_rating']?>
