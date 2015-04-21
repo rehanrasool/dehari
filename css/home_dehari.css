@@ -69,6 +69,12 @@
 .dropdown-menu {
 	background-color: #22544B;
 }
+.dropdown-menu li a {
+	padding-top: 0px !important;
+}
+.dropdown-menu a:hover {
+	background-color: #22544B !important;
+}
 
 @media(min-width:768px) {
     body {
@@ -84,7 +90,7 @@
 
 @media(max-width:768px) {
 	.navbar-fixed-top{
-		background-color: white;
+		background-color: #22544B;
 		height:80px;
 	}
 
@@ -102,6 +108,10 @@
 		background-color: black;
 	}
 
+	footer {
+		height: 40px;
+	}
+
 }
 
 
@@ -109,4 +119,5 @@
 section {
     padding: 50px 0;
     height: auto;
+    border-radius: 30px;
 }

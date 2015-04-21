@@ -13,7 +13,7 @@
     $db_dehari = mysql_connect('localhost','bluecu6_rehan','.dehari.');
         mysql_select_db('bluecu6_dehari', $db_dehari);
 
-    $query = 'SELECT * FROM dehari_notifications WHERE notification_read = 0 AND notification_user_id = ' . $user_id;
+    $query = 'SELECT * FROM dehari_notifications WHERE notification_read = 0 AND notification_user_id = ' . $user_id . ' ORDER BY notification_timestamp DESC;';
 
     // Perform Query
     $result = mysql_query($query, $db_dehari);
@@ -23,7 +23,7 @@
             $notification_list[] = $notification_list_row;
 
     // get old 10
-    $query_old = 'SELECT * FROM dehari_notifications WHERE notification_read = 1 AND notification_user_id = ' . $user_id . ' ORDER BY notification_timestamp LIMIT 10';
+    $query_old = 'SELECT * FROM dehari_notifications WHERE notification_read = 1 AND notification_user_id = ' . $user_id . ' ORDER BY notification_timestamp DESC LIMIT 10;';
     // Perform Query
     $result_old = mysql_query($query_old, $db_dehari);
 
@@ -44,6 +44,15 @@
         
     } 
 
+    // get new messages count
+    $query_message_count = 'SELECT COUNT(DISTINCT conversation_id) as new_messages_count FROM dehari_messages WHERE message_read = 0 AND to_id = ' . $user_id;
+
+    // Perform Query
+    $result_message_count = mysql_query($query_message_count, $db_dehari);
+    $result_array_message_count = mysql_fetch_assoc($result_message_count);
+
+    $new_messages_count = $result_array_message_count['new_messages_count'];
+    
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -64,7 +73,8 @@
     <!-- Custom CSS -->
     <link href='http://fonts.googleapis.com/css?family=Open+Sans:600,400' rel='stylesheet' type='text/css'>
     <link href="css/home_dehari.css" rel="stylesheet">
-
+    <link rel='shortcut icon' href='favicon.ico' type='image/x-icon'/ >
+    
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
     <!--[if lt IE 9]>
@@ -103,7 +113,7 @@
                         <a href="post_dehari.php">post dehari</a>
                     </li>
                     <li>
-                        <a href="messages.php">messages</a>
+                        <a href="messages.php">messages<?=($new_messages_count > 0)? '(' . $new_messages_count . ')': '' ?></a>
                     </li>
                     <li>
                         <a href="notifications.php">notifications</a>
@@ -128,40 +138,50 @@
 
 
     <!-- Ratings & Mode Toggle Section -->
-    <section id="notifications_section">
+    <section id="notifications_section" class="light_green_background margined_section">
         <div class="container">
             <div class="row">
-                <div class="col-md-12">
-                            <h3> new </h3>
-    <? foreach ($notification_list as $notification_row) { 
+                <h3> new </h3>
+    <? if (empty($notification_list)) {?>
+        <p>There are no new notifications</p>
+    <?}
+    foreach ($notification_list as $notification_row) { 
 
                             $notification_message_string = explode(",", $notification_row['notification_message']);
                             $notification_message = $notification_message_string[0];
                             $notification_dehari_id = $notification_message_string[1];
         ?>
+                <div class="col-md-10">
                             <p>
-                                <? echo $notification_message . ' <strong><a href="dehari_details.php?dehari_id=' . $notification_dehari_id . '">' . $notification_dehari_id . '</a></strong>'?>
+                                <? echo $notification_message . ' <strong><a href="dehari_details.php?dehari_id=' . $notification_dehari_id . '">' . get_title_from_dehari_id($notification_dehari_id) . '</a></strong>'?>
                             </p>
-    <? } ?>
                 </div>
+                <div class="col-md-2 align-right">
+                    <?=time_elapsed_string($notification_row['notification_timestamp'])?>
+                </div>
+    <? } ?>
             </div>
         </div> 
     </section>
 
-    <section id="notifications_old_section" class="gray_background">
+    <section id="notifications_old_section" class="gray_background margined_section">
         <div class="container">
             <div class="row">
-                <div class="col-md-12">
-                            <h3> old </h3>
+                <h3> old </h3>
     <? foreach ($notification_list_old as $notification_row) { 
 
                             $notification_message_string = explode(",", $notification_row['notification_message']);
                             $notification_message = $notification_message_string[0];
                             $notification_dehari_id = $notification_message_string[1];
         ?>
+                <div class="col-md-10">
                             <p>
                                 <? echo $notification_message . ' <strong><a href="dehari_details.php?dehari_id=' . $notification_dehari_id . '">' . get_title_from_dehari_id($notification_dehari_id) . '</a></strong>'?>
                             </p>
+                </div>
+                <div class="col-md-2 align-right">
+                    <?=time_elapsed_string($notification_row['notification_timestamp'])?>
+                </div>
     <? } ?>
                 </div>
             </div>

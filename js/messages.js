@@ -6,7 +6,15 @@ $(document).ready(function() {
     // DataTable
     var table = $('.message_table').DataTable({
         "lengthMenu": [[6, 25, 50, -1], [6, 25, 50, "All"]],
-        "dom": '<"top"i>rt<"bottom"p><"clear">'
+        "dom": '<"top"i>rt<"bottom"p><"clear">',
+        "columnDefs": [
+            {
+                "targets": [ 3 ],
+                "visible": false,
+                "searchable": false
+            }
+        ],
+        "order": [[ 3, "desc" ]]
     });
  
 

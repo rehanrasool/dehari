@@ -21,6 +21,15 @@
     $result_array = mysql_fetch_assoc($result);
 
     $notifications_count = $result_array['notifications_count'];
+
+    // get new messages count
+    $query_message_count = 'SELECT COUNT(DISTINCT conversation_id) as new_messages_count FROM dehari_messages WHERE message_read = 0 AND to_id = ' . $user_id;
+
+    // Perform Query
+    $result_message_count = mysql_query($query_message_count, $db_dehari);
+    $result_array_message_count = mysql_fetch_assoc($result_message_count);
+
+    $new_messages_count = $result_array_message_count['new_messages_count'];
 ?>
 
 <!DOCTYPE html>
@@ -43,7 +52,8 @@
     <link href='http://fonts.googleapis.com/css?family=Open+Sans:600,400' rel='stylesheet' type='text/css'>
     <link href="css/home_dehari.css" rel="stylesheet">
     <link href="css/jquery.dataTables.css" rel="stylesheet" type="text/css" />
-
+    <link rel='shortcut icon' href='favicon.ico' type='image/x-icon'/ >
+    
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
     <!--[if lt IE 9]>
@@ -82,7 +92,7 @@
                         <a href="post_dehari.php">post dehari</a>
                     </li>
                     <li>
-                        <a href="messages.php">messages</a>
+                        <a href="messages.php">messages<?=($new_messages_count > 0)? '(' . $new_messages_count . ')': '' ?></a>
                     </li>
                     <li>
                         <a href="notifications.php">notifications<?=($notifications_count > 0)? '(' . $notifications_count . ')': '' ?></a>
@@ -173,7 +183,7 @@
 ?>
 
     <!-- Dehari Details Section -->
-    <section id="dehari_details">
+    <section id="dehari_details" class="gray_background margined_section">
         <div class="container">
             <div class="row">
 
@@ -194,8 +204,8 @@
                       City:
                     </h4><?=$dehari_city?>
                     <h4>
-                      Phone:
-                    </h4><?=$dehari_phone?>
+                      Posted On:
+                    </h4><?=(new DateTime($dehari_date))->format('m/d/Y')?>
                 </div>
                 <div class="col-md-6">
                     <h4>
@@ -217,7 +227,7 @@
     </section>
 
     <!-- Dehari Bids Section -->
-    <section id="dehari_bids" class="gray_background">
+    <section id="dehari_bids" class="light_green_background margined_section">
         <div class="container">
             <div class="row">
                 <div class="col-md-12">
@@ -225,7 +235,7 @@
                       Bids
                     </h3>
 
-                    <? if ($user_id != $dehari_user_id) {?>
+                    <? if ($user_id != $dehari_user_id && empty($dehari_selected_bid)) {?>
                     <form class="form-inline" method="post" action="server/find_dehari.php">
                         <div class="col-md-2">
                             <input type="number" min="1" name="dehari_bid" placeholder="Enter Bid" required>
@@ -247,7 +257,7 @@
                 </div>
 
                 
-
+                <? if (!empty($bids_array)) {?>
                 <div class="col-md-2">
                     <h4>
                       Value
@@ -277,8 +287,8 @@
                     <?}?>
                     </h4>
                 </div>
-                <? if (!empty($bids_array)) {
-                    foreach($bids_array as $bid_user_id => $bid_value) {
+                
+                    <?foreach($bids_array as $bid_user_id => $bid_value) {
                             //$bids_array[$bid_user_id]['dehari_id']
                             //$bids_array[$bid_user_id]['bid_user_id']
                             //$bids_array[$bid_user_id]['bid_value']
@@ -287,7 +297,7 @@
                             //$bids_array[$bid_user_id]['bid_user_rating']
                 ?>
                 <div class="col-md-2">
-                    <?=$bids_array[$bid_user_id]['bid_value']?>
+                    <strong><?=$bids_array[$bid_user_id]['bid_value']?></strong>
                 </div>
                 <div class="col-md-2">
                     <a href="profile.php?user=<?=$bid_user_id?>"><?=$bids_array[$bid_user_id]['bid_user_name']?></a>
@@ -319,7 +329,7 @@
                         </div>
                     </form>
                 </div>
-
+                    <hr>
                     <?}
                 }?>
             </div>
@@ -329,7 +339,7 @@
 
 <? if (!empty($dehari_selected_bid)) {?>
     <!-- Dehari In Progress Section -->
-    <section id="dehari_in_progress">
+    <section id="dehari_in_progress" class="gray_background margined_section">
         <div class="container">
             <div class="row">
                 <div class="col-md-12">
@@ -353,7 +363,7 @@
                       Rating
                     </h4>
                 </div>
-                <div class="col-md-3">
+                <div class="col-md-2 col-md-offset-1">
                     <h4>
                       Action
                     </h4>
@@ -364,7 +374,7 @@
                     $dehari_selected_bid_value = $bid_selected_split[1];
                 ?>
                 <div class="col-md-3">
-                    <?=$dehari_selected_bid_value?>
+                    <strong><?=$dehari_selected_bid_value?></strong>
                 </div>
                 <div class="col-md-3">
                     <a href="profile.php?user=<?=$dehari_selected_user_id?>"><?=$bids_array[$dehari_selected_user_id]['bid_user_name']?></a>
@@ -372,8 +382,9 @@
                 <div class="col-md-3">
                     <?=$bids_array[$dehari_selected_user_id]['bid_user_rating']?>
                 </div>
-                <div class="col-md-3">
-                    MESSAGE
+                <div class="col-md-2 col-md-offset-1">
+                    <input id="send_message_bid_user_id" type="hidden" value="<?=$dehari_selected_user_id?>">
+                    <input id="send_message_bid_button" class="red_button" type="button" value="SEND MESSAGE">
                 </div>
 
                 <?}?>
@@ -386,7 +397,7 @@
 
 <? if ((!empty($dehari_selected_bid)) && ($user_id == $dehari_user_id || $user_id == $dehari_selected_user_id)) {?>
     <!-- Dehari Completed Section -->
-    <section id="dehari_completed" class="gray_background">
+    <section id="dehari_completed" class="light_green_background margined_section">
         <div class="container">
             <div class="row">
                 <div class="col-md-12">
@@ -395,7 +406,28 @@
                     </h3>
                 </div>
 
-                <div class="col-md-3">
+                <div class="col-md-4">
+                    <h4>
+                        Client
+                    </h4> 
+                    <a href="profile.php?user=<?=$dehari_user_id?>"><?=get_username_from_userid($dehari_user_id)?></a>
+                </div>
+
+                <div class="col-md-4">
+                    <h4>
+                        Worker
+                    </h4> 
+                    <a href="profile.php?user=<?=$dehari_selected_user_id?>"><?=get_username_from_userid($dehari_selected_user_id)?></a>
+                </div>
+
+                <div class="col-md-4">
+                    <h4>
+                        Cost
+                    </h4> 
+                    <?=$dehari_selected_bid_value?>
+                </div>
+                <hr>
+                <div class="col-md-4">
                     <h4>
                         Rating Received
                     </h4> 
@@ -414,14 +446,14 @@
                             echo "NOT RECEIVED YET";
                         }?>
                 </div>
-                <div class="col-md-3">
+<!--                 <div class="col-md-3">
                     <h4>
                         Feedback Received
                     </h4>
                         FEEDBACK GOES HERE
-                </div>
+                </div> -->
 
-                <div class="col-md-3">
+                <div class="col-md-4">
                     <h4>
                         Rating Given
                     </h4> 
@@ -468,12 +500,15 @@
                         }?>   
 
                 </div>
-                <div class="col-md-3">
+                <div class="col-md-4">
+                    &nbsp;
+                </div>
+<!--                 <div class="col-md-3">
                     <h4>
                         Feedback Given
                     </h4>
                         FEEDBACK GOES HERE
-                </div>
+                </div> -->
             </div>
 
         </div>

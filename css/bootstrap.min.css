@@ -87,10 +87,9 @@ select {
 }
 
 hr {
-	border: none;
 	width: 100%;
-	color: #B23A3C;
-	background-color: #B23A3C;
+	color: white;
+	background-color: white;
 	height: 1px;
 }
 
@@ -136,7 +135,7 @@ footer li a:hover {
 .success_area {
 	color: #004c00;
 	text-align: center;
-	background-color: #b2ffb2;
+	background-color: #E6F4EF;
 	border-radius: 5px;
 	margin: 5px;
 }
@@ -159,7 +158,19 @@ footer li a:hover {
 .dark_gray_background {
 	background-color: #d3d3d3;
 }
-	
+
+.light_green_background {
+	background-color: #E6F4EF;
+}
+
+.light_red_background {
+	background-color: #F4E9E9;
+}
+
+.light_brown_background {
+	background-color: #F4E4DC;
+}
+
 #worker_table_section, #client_table_section {
 	height: 460px;
 }
@@ -170,4 +181,17 @@ footer li a:hover {
 
 #stats {
 	margin-bottom: 30px;
+}
+
+.margined_section {
+	margin: 50px;
+}
+
+.circular_image {
+	padding: 15px;
+	width: 100px;
+	height: 100px;
+	border-radius: 100px;
+	-webkit-border-radius: 150px;
+	-moz-border-radius: 150px;
 }

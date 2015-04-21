@@ -20,6 +20,15 @@
 
     $notifications_count = $result_array['notifications_count'];
 
+    // get new messages count
+    $query_message_count = 'SELECT COUNT(DISTINCT conversation_id) as new_messages_count FROM dehari_messages WHERE message_read = 0 AND to_id = ' . $user_id;
+
+    // Perform Query
+    $result_message_count = mysql_query($query_message_count, $db_dehari);
+    $result_array_message_count = mysql_fetch_assoc($result_message_count);
+
+    $new_messages_count = $result_array_message_count['new_messages_count'];
+
 ?>
 
 <!DOCTYPE html>
@@ -44,6 +53,7 @@
     <link href='http://fonts.googleapis.com/css?family=Open+Sans:600,400' rel='stylesheet' type='text/css'>
     <link href="css/home_dehari.css" rel="stylesheet">
     <link href="css/jquery.dataTables.css" rel="stylesheet" type="text/css" />
+    <link rel='shortcut icon' href='favicon.ico' type='image/x-icon'/ >
 
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
@@ -83,7 +93,7 @@
                         <a href="post_dehari.php">post dehari</a>
                     </li>
                     <li>
-                        <a href="messages.php">messages</a>
+                        <a href="messages.php">messages<?=($new_messages_count > 0)? '(' . $new_messages_count . ')': '' ?></a>
                     </li>
                     <li>
                         <a href="notifications.php">notifications<?=($notifications_count > 0)? '(' . $notifications_count . ')': '' ?></a>
@@ -389,7 +399,7 @@
                             <td><?=$dehari_row['dehari_city']?></td>
                             <td data-value="78025368997"><?=time_elapsed_string($dehari_row['dehari_date'])?></td>
                             <td data-value="1">Bids Submitted</td>
-                            <td data-value="78025368997"><?=(new DateTime($dehari_row['dehari_date']))->format('m/d/Y')?></td>
+                            <td data-value="78025368997"><?=(new DateTime($dehari_row['dehari_date']))->format('m/d/Y H:i:s')?></td>
                         </tr>
 <? } ?>
 
@@ -400,7 +410,7 @@
                             <td><?=$dehari_row['dehari_city']?></td>
                             <td data-value="78025368997"><?=time_elapsed_string($dehari_row['dehari_date'])?></td>
                             <td data-value="1">Work In Progress</td>
-                            <td data-value="78025368997"><?=(new DateTime($dehari_row['dehari_date']))->format('m/d/Y')?></td>
+                            <td data-value="78025368997"><?=(new DateTime($dehari_row['dehari_date']))->format('m/d/Y H:i:s')?></td>
                         </tr>
 <? } ?>
 
@@ -411,7 +421,7 @@
                             <td><?=$dehari_row['dehari_city']?></td>
                             <td data-value="78025368997"><?=time_elapsed_string($dehari_row['dehari_date'])?></td>
                             <td data-value="1">Work Completed</td>
-                            <td data-value="78025368997"><?=(new DateTime($dehari_row['dehari_date']))->format('m/d/Y')?></td>
+                            <td data-value="78025368997"><?=(new DateTime($dehari_row['dehari_date']))->format('m/d/Y H:i:s')?></td>
                         </tr>
 <? } ?>
                     </tbody>
@@ -501,7 +511,7 @@
                             <td><?=$dehari_row['dehari_city']?></td>
                             <td data-value="78025368997"><?=time_elapsed_string($dehari_row['dehari_date'])?></td>
                             <td data-value="1">Work Posted</td>
-                            <td data-value="78025368997"><?=(new DateTime($dehari_row['dehari_date']))->format('m/d/Y')?></td>
+                            <td data-value="78025368997"><?=(new DateTime($dehari_row['dehari_date']))->format('m/d/Y H:i:s')?></td>
                         </tr>
 <? } ?>
 
@@ -512,7 +522,7 @@
                             <td><?=$dehari_row['dehari_city']?></td>
                             <td data-value="78025368997"><?=time_elapsed_string($dehari_row['dehari_date'])?></td>
                             <td data-value="1">Bids Received</td>
-                            <td data-value="78025368997"><?=(new DateTime($dehari_row['dehari_date']))->format('m/d/Y')?></td>
+                            <td data-value="78025368997"><?=(new DateTime($dehari_row['dehari_date']))->format('m/d/Y H:i:s')?></td>
                         </tr>
 <? } ?>
 
@@ -523,7 +533,7 @@
                             <td><?=$dehari_row['dehari_city']?></td>
                             <td data-value="78025368997"><?=time_elapsed_string($dehari_row['dehari_date'])?></td>
                             <td data-value="1">Work In Progress</td>
-                            <td data-value="78025368997"><?=(new DateTime($dehari_row['dehari_date']))->format('m/d/Y')?></td>
+                            <td data-value="78025368997"><?=(new DateTime($dehari_row['dehari_date']))->format('m/d/Y H:i:s')?></td>
                         </tr>
 <? } ?>
 
@@ -534,7 +544,7 @@
                             <td><?=$dehari_row['dehari_city']?></td>
                             <td data-value="78025368997"><?=time_elapsed_string($dehari_row['dehari_date'])?></td>
                             <td data-value="1">Work Completed</td>
-                            <td data-value="78025368997"><?=(new DateTime($dehari_row['dehari_date']))->format('m/d/Y')?></td>
+                            <td data-value="78025368997"><?=(new DateTime($dehari_row['dehari_date']))->format('m/d/Y H:i:s')?></td>
                         </tr>
 <? } ?>
                     </tbody>
