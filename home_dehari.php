@@ -1,4 +1,5 @@
 <?php
+    include 'server/find_dehari.php';
     session_start();
     if (!isset($_SESSION['user_id'])) {
        header("Location: index.php");
@@ -370,10 +371,13 @@
                                 City
                             </th>
                             <th data-hide="phone,tablet">
-                                Date Posted
+                                Posted
                             </th>
                             <th data-hide="phone">
                                 Status
+                            </th>
+                            <th data-hide="phone">
+                                Date Posted
                             </th>
                         </tr>
                     </thead>
@@ -383,8 +387,9 @@
                             <td><a href="dehari_details.php?dehari_id=<?=$dehari_row['dehari_id']?>" class="incoming_bids_submitted_details" id="dehari_list_id_<?=$dehari_row['dehari_id']?>"><?=$dehari_row['dehari_title']?></a></td>
                             <td><?=$dehari_row['dehari_category']?></td>
                             <td><?=$dehari_row['dehari_city']?></td>
-                            <td data-value="78025368997"><?=(new DateTime($dehari_row['dehari_date']))->format('m/d/Y')?></td>
+                            <td data-value="78025368997"><?=time_elapsed_string($dehari_row['dehari_date'])?></td>
                             <td data-value="1">Bids Submitted</td>
+                            <td data-value="78025368997"><?=(new DateTime($dehari_row['dehari_date']))->format('m/d/Y')?></td>
                         </tr>
 <? } ?>
 
@@ -393,8 +398,9 @@
                             <td><a href="dehari_details.php?dehari_id=<?=$dehari_row['dehari_id']?>" class="incoming_in_progress_details" id="dehari_list_id_<?=$dehari_row['dehari_id']?>"><?=$dehari_row['dehari_title']?></a></td>
                             <td><?=$dehari_row['dehari_category']?></td>
                             <td><?=$dehari_row['dehari_city']?></td>
-                            <td data-value="78025368997"><?=(new DateTime($dehari_row['dehari_date']))->format('m/d/Y')?></td>
+                            <td data-value="78025368997"><?=time_elapsed_string($dehari_row['dehari_date'])?></td>
                             <td data-value="1">Work In Progress</td>
+                            <td data-value="78025368997"><?=(new DateTime($dehari_row['dehari_date']))->format('m/d/Y')?></td>
                         </tr>
 <? } ?>
 
@@ -403,8 +409,9 @@
                             <td><a href="dehari_details.php?dehari_id=<?=$dehari_row['dehari_id']?>" class="incoming_completed_details" id="dehari_list_id_<?=$dehari_row['dehari_id']?>"><?=$dehari_row['dehari_title']?></a></td>
                             <td><?=$dehari_row['dehari_category']?></td>
                             <td><?=$dehari_row['dehari_city']?></td>
-                            <td data-value="78025368997"><?=(new DateTime($dehari_row['dehari_date']))->format('m/d/Y')?></td>
+                            <td data-value="78025368997"><?=time_elapsed_string($dehari_row['dehari_date'])?></td>
                             <td data-value="1">Work Completed</td>
+                            <td data-value="78025368997"><?=(new DateTime($dehari_row['dehari_date']))->format('m/d/Y')?></td>
                         </tr>
 <? } ?>
                     </tbody>
@@ -475,10 +482,13 @@
                                 City
                             </th>
                             <th data-hide="phone,tablet">
-                                Date Posted
+                                Posted
                             </th>
                             <th data-hide="phone">
                                 Status
+                            </th>
+                            <th data-hide="phone,tablet">
+                                Date Posted
                             </th>
                         </tr>
                     </thead>
@@ -489,8 +499,9 @@
                             <td><a href="dehari_details.php?dehari_id=<?=$dehari_row['dehari_id']?>" class="outgoing_posted_details" id="dehari_list_id_<?=$dehari_row['dehari_id']?>"><?=$dehari_row['dehari_title']?></a></td>
                             <td><?=$dehari_row['dehari_category']?></td>
                             <td><?=$dehari_row['dehari_city']?></td>
-                            <td data-value="78025368997"><?=(new DateTime($dehari_row['dehari_date']))->format('m/d/Y')?></td>
+                            <td data-value="78025368997"><?=time_elapsed_string($dehari_row['dehari_date'])?></td>
                             <td data-value="1">Work Posted</td>
+                            <td data-value="78025368997"><?=(new DateTime($dehari_row['dehari_date']))->format('m/d/Y')?></td>
                         </tr>
 <? } ?>
 
@@ -499,8 +510,9 @@
                             <td><a href="dehari_details.php?dehari_id=<?=$dehari_row['dehari_id']?>" class="outgoing_bids_received_details" id="dehari_list_id_<?=$dehari_row['dehari_id']?>"><?=$dehari_row['dehari_title']?></a></td>
                             <td><?=$dehari_row['dehari_category']?></td>
                             <td><?=$dehari_row['dehari_city']?></td>
-                            <td data-value="78025368997"><?=(new DateTime($dehari_row['dehari_date']))->format('m/d/Y')?></td>
+                            <td data-value="78025368997"><?=time_elapsed_string($dehari_row['dehari_date'])?></td>
                             <td data-value="1">Bids Received</td>
+                            <td data-value="78025368997"><?=(new DateTime($dehari_row['dehari_date']))->format('m/d/Y')?></td>
                         </tr>
 <? } ?>
 
@@ -509,8 +521,9 @@
                             <td><a href="dehari_details.php?dehari_id=<?=$dehari_row['dehari_id']?>" class="outgoing_in_progress_details" id="dehari_list_id_<?=$dehari_row['dehari_id']?>"><?=$dehari_row['dehari_title']?></a></td>
                             <td><?=$dehari_row['dehari_category']?></td>
                             <td><?=$dehari_row['dehari_city']?></td>
-                            <td data-value="78025368997"><?=(new DateTime($dehari_row['dehari_date']))->format('m/d/Y')?></td>
+                            <td data-value="78025368997"><?=time_elapsed_string($dehari_row['dehari_date'])?></td>
                             <td data-value="1">Work In Progress</td>
+                            <td data-value="78025368997"><?=(new DateTime($dehari_row['dehari_date']))->format('m/d/Y')?></td>
                         </tr>
 <? } ?>
 
@@ -519,8 +532,9 @@
                             <td><a href="dehari_details.php?dehari_id=<?=$dehari_row['dehari_id']?>" class="outgoing_completed_details" id="dehari_list_id_<?=$dehari_row['dehari_id']?>"><?=$dehari_row['dehari_title']?></a></td>
                             <td><?=$dehari_row['dehari_category']?></td>
                             <td><?=$dehari_row['dehari_city']?></td>
-                            <td data-value="78025368997"><?=(new DateTime($dehari_row['dehari_date']))->format('m/d/Y')?></td>
+                            <td data-value="78025368997"><?=time_elapsed_string($dehari_row['dehari_date'])?></td>
                             <td data-value="1">Work Completed</td>
+                            <td data-value="78025368997"><?=(new DateTime($dehari_row['dehari_date']))->format('m/d/Y')?></td>
                         </tr>
 <? } ?>
                     </tbody>

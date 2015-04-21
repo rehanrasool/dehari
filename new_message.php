@@ -123,7 +123,7 @@
                         <?}?>
                         </div>
                         <div class="col-md-12">
-                            <textarea placeholder="Enter Message" name="message_content" rows="15" required> </textarea>
+                            <textarea placeholder="Enter Message" name="message_content" rows="12" required> </textarea>
                         </div>
                         <div>
                             <input name="message_from" type="hidden" value="<?=$user_id?>">

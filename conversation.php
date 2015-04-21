@@ -109,15 +109,7 @@
     <section id="find_dehari_section">
         <div class="container">
             
- 
-            <div class = "col-md-12">
-                <div class = "col-md-4"></div> 
-                <div class = "col-md-4"><?=$message_row['title']?></div> 
-                <div class = "col-md-4"></div> 
-
-            </div> 
-
-            <?
+    <?
         $db_dehari = mysql_connect('localhost','bluecu6_rehan','.dehari.');
             mysql_select_db('bluecu6_dehari', $db_dehari);
 
@@ -136,49 +128,63 @@
                 $conversation_with_id = $message_list[0]['from_id'];
             }
 
+
+            $query_convo = 'SELECT * FROM dehari_conversation WHERE conversation_id = ' .  $convo_id . ';';
+
+            // Perform Query
+            $result_convo = mysql_query($query_convo, $db_dehari);
+            $convo_array = mysql_fetch_assoc($result_convo);
+
     ?>
+            <div class = "col-md-12">
+                <div class = "col-md-4"></div> 
+                <div class = "col-md-4"><h2><?=$convo_array['title']?></h2></div> 
+                <div class = "col-md-4"></div> 
+
+            </div> 
+
+            <div class = "col-md-12">
+                <form class="form-inline" method="post" action="server/messages.php">
+                    <div class="col-md-10">
+                        <input type="textarea" name="message_content" value="" placeholder="Enter Message" required>
+                    </div>
+                    <div>
+                        <input name="conversation_id" type="hidden" value="<?=$convo_id?>">
+                        <input name="message_from" type="hidden" value="<?=$user_id?>">
+                        <input name="message_to" type="hidden" value="<?=$conversation_with_id?>">
+                        <input name="send_message" type="hidden" value="1">
+                    </div>
+                    <div class="col-md-2">
+                         <input type="submit" class="red_button" value="SEND">
+                    </div>
+                </form>
+            </div>
 
     <? foreach ($message_list as $message_row) { 
-        $user_name = get_username_from_userid($message_row['from_id']);
+        $message_user_name = get_username_from_userid($message_row['from_id']);
         ?>
-        <div class = "col-md-12">
-                <div class = "col-md-4"><h4><?=$from?></h4></div> 
-                <div class = "col-md-4"></div> 
-                <div class = "col-md-4"></div> 
-
-        </div> 
+        <div class = "col-md-12"> &nbsp;</div>
+        <?if ($message_row['from_id'] == $user_id) {?>
+            <div class = "col-md-12 gray_background rounded_corners">
+                <div class = "col-md-12"><h3><?=$message_user_name?></h3></div> 
+                <div class = "col-md-9"><h4><?=$message_row['message']?><h4></div> 
+                <div class = "col-md-3 text-right"><h6><?=$message_row['time_stamp']?></h6></div> 
+            </div>
+        <? } else {?>
+<!--             <div class = "col-md-12 text-right dark_gray_background rounded_corners">
+                <div class = "col-md-12"><h3><?=$message_user_name?></h3></div> 
+                <div class = "col-md-3 text-left"><h6><?=$message_row['time_stamp']?></h6></div> 
+                <div class = "col-md-9"><h4><?=$message_row['message']?><h4></div> 
+            </div> -->
+            <div class = "col-md-12 dark_gray_background rounded_corners">
+                <div class = "col-md-12"><h3><?=$message_user_name?></h3></div> 
+                <div class = "col-md-9"><h4><?=$message_row['message']?><h4></div> 
+                <div class = "col-md-3 text-right"><h6><?=$message_row['time_stamp']?></h6></div> 
+            </div>
+        <?}?>
+        
             
-
-        <div class = "col-md-12">
-                <div class = "col-md-4"><?=$message_row['message']?></div> 
-                <div class = "col-md-4"></div> 
-                <div class = "col-md-4"></div> 
-
-        </div> 
-
-         <div class = "col-md-12">
-                <div class = "col-md-4"><?=$message_row['time_stamp']?></div> 
-                <div class = "col-md-4"></div> 
-                <div class = "col-md-4"></div> 
-
-        </div> 
-        <br>
-             <?}?>
-
-                    <form class="form-inline" method="post" action="server/messages.php">
-                        <div class="col-md-10">
-                            <input type="textarea" name="message_content" value="" placeholder="Enter Message" required>
-                        </div>
-                        <div>
-                            <input name="conversation_id" type="hidden" value="<?=$convo_id?>">
-                            <input name="message_from" type="hidden" value="<?=$user_id?>">
-                            <input name="message_to" type="hidden" value="<?=$conversation_with_id?>">
-                            <input name="send_message" type="hidden" value="1">
-                        </div>
-                        <div class="col-md-2">
-                             <input type="submit" class="red_button" value="SEND">
-                        </div>
-                    </form>
+    <?}?>
 
         </div>
     </section>

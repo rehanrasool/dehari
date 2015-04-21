@@ -1,4 +1,5 @@
 <?php
+    include 'server/find_dehari.php';
     session_start();
     if (!isset($_SESSION['user_id'])) {
        header("Location: index.php");
@@ -16,6 +17,33 @@
     $result_array = mysql_fetch_assoc($result);
 
     $notifications_count = $result_array['notifications_count'];
+
+    // get cities list
+    $query_configuration_cities = 'SELECT * FROM dehari_configure WHERE configure_property = "cities";';
+
+    // Perform Query
+    $result_configuration_cities = mysql_query($query_configuration_cities, $db_dehari);
+    $result_array_configuration_cities = mysql_fetch_assoc($result_configuration_cities);
+
+    $cities_list = explode(",", $result_array_configuration_cities['configure_value']);
+
+    // get categories list
+    $query_configuration_categories = 'SELECT * FROM dehari_configure WHERE configure_property = "categories";';
+
+    // Perform Query
+    $result_configuration_categories = mysql_query($query_configuration_categories, $db_dehari);
+    $result_array_configuration_categories = mysql_fetch_assoc($result_configuration_categories);
+
+    $categories_list = explode(",", $result_array_configuration_categories['configure_value']);
+
+    // get budget list
+    $query_configuration_budget = 'SELECT * FROM dehari_configure WHERE configure_property = "budget";';
+
+    // Perform Query
+    $result_configuration_budget = mysql_query($query_configuration_budget, $db_dehari);
+    $result_array_configuration_budget = mysql_fetch_assoc($result_configuration_budget);
+
+    $budget_list = explode(",", $result_array_configuration_budget['configure_value']);
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -108,38 +136,35 @@
                 <div class="col-md-12">
                     
                     <div class="row" id="find_dehari_filters">
-                        <div class="col-md-2">  
+                        <div class="col-md-3">  
                             Title: <input id="find_dehari_title" type="text"/>
                         </div>
                         <div class="col-md-2">  
-                            Category: <input id="find_dehari_category" type="text"/>
+                            Category: <select id="find_dehari_category">
+                              <option selected value=""></option>
+                              <? foreach ($categories_list as $category_key => $category_name){?>
+                              <option value="<?=$category_name?>"><?=$category_name?></option>
+                              <?}?>
+                            </select>
                         </div>
                         <div class="col-md-2">  
                             City: <select id="find_dehari_city">
                               <option selected value=""></option>
-                              <option value="Islamabad">Islamabad</option>
-                              <option value="Karachi">Karachi</option>
-                              <option value="Lahore">Lahore</option>
-                              <option value="Peshawar">Peshawar</option>
-                              <option value="Rawalpindi">Rawalpindi</option>
+                              <? foreach ($cities_list as $city_key => $city_name){?>
+                              <option value="<?=$city_name?>"><?=$city_name?></option>
+                              <?}?>
                             </select>
                         </div>
                         <div class="col-md-2">  
-                            Date: <input id="find_dehari_date" type="text"/>
-                        </div>
-                        <div class="col-md-2">  
-                            Budget: <select id="find_dehari_budget">
+                            Budget (PKR): <select id="find_dehari_budget">
                               <option selected value=""></option>
-                              <option value="100 to 200">100 to 200</option>
-                              <option value="200 to 500">200 to 500</option>
-                              <option value="500 to 1000">500 to 1000</option>
-                              <option value="1000 to 5000">1000 to 5000</option>
-                              <option value="5000+">5000+</option>
+                              <option selected value=""></option>
+                              <? foreach ($budget_list as $budget_key => $budget_range){?>
+                              <option value="<?=$budget_range?>"><?=$budget_range?></option>
+                              <?}?>
                             </select>
-                            
-
                         </div> 
-                         <div class="col-md-2">  
+                         <div class="col-md-3">  
                             <a href="" id="clear_search_button" title="clear filter">[clear]</a>
                             </br>
                             <input id="search_button" type="button" class="green_button" value="SEARCH">
@@ -177,10 +202,13 @@
                                     City
                                 </th>
                                 <th data-hide="phone,tablet">
-                                    Date Posted
+                                    Posted
                                 </th>
                                 <th data-hide="phone">
                                     Budget
+                                </th>
+                                <th data-hide="phone,tablet">
+                                    Date Posted
                                 </th>
                             </tr>
                         </thead>
@@ -191,8 +219,9 @@
                                 <td><a href="dehari_details.php?dehari_id=<?=$dehari_row['dehari_id']?>" id="dehari_list_id_<?=$dehari_row['dehari_id']?>"><?=$dehari_row['dehari_title']?></a></td>
                                 <td><?=$dehari_row['dehari_category']?></td>
                                 <td><?=$dehari_row['dehari_city']?></td>
-                                <td data-value="78025368997"><?=(new DateTime($dehari_row['dehari_date']))->format('m/d/Y')?></td>
+                                <td data-value="78025368997"><?=time_elapsed_string($dehari_row['dehari_date'])?></td>
                                 <td data-value="1"><?=$dehari_row['dehari_budget']?></td>
+                                <td data-value="78025368997"><?=(new DateTime($dehari_row['dehari_date']))->format('m/d/Y')?></td>
                             </tr>
     <? } ?>
                         </tbody>

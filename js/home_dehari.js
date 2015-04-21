@@ -7,13 +7,27 @@ $(document).ready(function() {
     var worker_table = $('.incoming_dehari_table').DataTable({
         "lengthMenu": [[7, 25, 50, -1], [7, 25, 50, "All"]],
         "dom": '<"top">rt<"bottom"ip><"clear">',
-        "order": [[ 3, "desc" ]]
+        "columnDefs": [
+            {
+                "targets": [ 5 ],
+                "visible": false,
+                "searchable": false
+            }
+        ],
+        "order": [[ 5, "desc" ]]
     });
 
     var client_table = $('.outgoing_dehari_table').DataTable({
         "lengthMenu": [[7, 25, 50, -1], [7, 25, 50, "All"]],
         "dom": '<"top">rt<"bottom"ip><"clear">',
-        "order": [[ 3, "desc" ]]
+        "columnDefs": [
+            {
+                "targets": [ 5 ],
+                "visible": false,
+                "searchable": false
+            }
+        ],
+        "order": [[ 5, "desc" ]]
     });
 
 

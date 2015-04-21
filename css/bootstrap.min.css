@@ -156,6 +156,18 @@ footer li a:hover {
 	background-color: #22544B;
 }
 
+.dark_gray_background {
+	background-color: #d3d3d3;
+}
+	
 #worker_table_section, #client_table_section {
 	height: 460px;
+}
+
+.rounded_corners {
+	border-radius: 25px;
+}
+
+#stats {
+	margin-bottom: 30px;
 }

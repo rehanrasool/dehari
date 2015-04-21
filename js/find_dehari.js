@@ -7,7 +7,14 @@ $(document).ready(function() {
     var table = $('.dehari_table').DataTable({
         "lengthMenu": [[6, 25, 50, -1], [6, 25, 50, "All"]],
         "dom": '<"top"i>rt<"bottom"p><"clear">',
-        "order": [[ 3, "desc" ]]
+        "columnDefs": [
+            {
+                "targets": [ 5 ],
+                "visible": false,
+                "searchable": false
+            }
+        ],
+        "order": [[ 5, "desc" ]]
     });
  
 
@@ -17,13 +24,11 @@ $(document).ready(function() {
 	        var title_search_val = $('#find_dehari_title').val();
 	        var category_search_val = $('#find_dehari_category').val();
 	        var city_search_val = $('#find_dehari_city').val();
-	        var date_search_val = $('#find_dehari_date').val();
 	        var budget_search_val = $('#find_dehari_budget').val();
 			
 			table.column( 0 ).search( title_search_val ).draw();
 			table.column( 1 ).search( category_search_val ).draw();
 			table.column( 2 ).search( city_search_val ).draw();
-			table.column( 3 ).search( date_search_val ).draw();
 			table.column( 4 ).search( budget_search_val ).draw();
 	    } );
 	});
@@ -33,7 +38,6 @@ $(document).ready(function() {
 		$('#find_dehari_title').val("");
 	    $('#find_dehari_category').val("");
 	    $('#find_dehari_city').val("");
-	    $('#find_dehari_date').val("");
 	    $('#find_dehari_budget').val("");
 
 

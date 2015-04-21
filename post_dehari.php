@@ -17,6 +17,33 @@
     $result_array = mysql_fetch_assoc($result);
 
     $notifications_count = $result_array['notifications_count'];
+
+    // get cities list
+    $query_configuration_cities = 'SELECT * FROM dehari_configure WHERE configure_property = "cities";';
+
+    // Perform Query
+    $result_configuration_cities = mysql_query($query_configuration_cities, $db_dehari);
+    $result_array_configuration_cities = mysql_fetch_assoc($result_configuration_cities);
+
+    $cities_list = explode(",", $result_array_configuration_cities['configure_value']);
+
+    // get categories list
+    $query_configuration_categories = 'SELECT * FROM dehari_configure WHERE configure_property = "categories";';
+
+    // Perform Query
+    $result_configuration_categories = mysql_query($query_configuration_categories, $db_dehari);
+    $result_array_configuration_categories = mysql_fetch_assoc($result_configuration_categories);
+
+    $categories_list = explode(",", $result_array_configuration_categories['configure_value']);
+
+    // get budget list
+    $query_configuration_budget = 'SELECT * FROM dehari_configure WHERE configure_property = "budget";';
+
+    // Perform Query
+    $result_configuration_budget = mysql_query($query_configuration_budget, $db_dehari);
+    $result_array_configuration_budget = mysql_fetch_assoc($result_configuration_budget);
+
+    $budget_list = explode(",", $result_array_configuration_budget['configure_value']);
 ?>
 
 <!DOCTYPE html>
@@ -124,16 +151,19 @@
                         City 
                         <select name="dehari_city" required>
                           <option disabled selected value=""> Select your City </option>
-                          <option value="Islamabad">Islamabad</option>
-                          <option value="Karachi">Karachi</option>
-                          <option value="Lahore">Lahore</option>
-                          <option value="Peshawar">Peshawar</option>
-                          <option value="Rawalpindi">Rawalpindi</option>
+                          <? foreach ($cities_list as $city_key => $city_name){?>
+                          <option value="<?=$city_name?>"><?=$city_name?></option>
+                          <?}?>
                         </select>
                     </div>
                     <div class="col-md-6">
                         Category 
-                        <p><input type="text" name="dehari_category" value="" required></p>
+                        <select name="dehari_category" required>
+                          <option disabled selected value=""> Select Category </option>
+                          <? foreach ($categories_list as $category_key => $category_name){?>
+                          <option value="<?=$category_name?>"><?=$category_name?></option>
+                          <?}?>
+                        </select>
 
                         Phone 
                         <p><input type="text" name="dehari_phone" value="" required></p>
@@ -141,11 +171,9 @@
                         Budget (PKR)
                         <select name="dehari_budget" required>
                           <option disabled selected value=""> Select your Budget </option>
-                          <option value="100 to 200">100 to 200</option>
-                          <option value="200 to 500">200 to 500</option>
-                          <option value="500 to 1000">500 to 1000</option>
-                          <option value="1000 to 5000">1000 to 5000</option>
-                          <option value="5000+">5000+</option>
+                          <? foreach ($budget_list as $budget_key => $budget_range){?>
+                          <option value="<?=$budget_range?>"><?=$budget_range?></option>
+                          <?}?>
                         </select>
                     </div>
 

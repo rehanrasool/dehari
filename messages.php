@@ -119,7 +119,7 @@
                         <input id="message_search_button" type="button" class="green_button" value="Search">
                     </div>
                     <div class="col-md-3">  
-                        <input id="new_message_button" type="button" class="green_button" value="New Message">
+                        <input id="new_message_button" type="button" class="red_button" value="New Message">
                     </div>
             </div>
             </div>
@@ -161,13 +161,13 @@
                             <tr>
 
                                 <td><a href="conversation.php?conversation_id=<?=$message_row['conversation_id']?>" ><?=$message_row['title']?></a></td>
-                                <td><? if ($user_id == $message_row['user1']) {
-                                        echo get_username_from_userid($message_row['user2']);
-                                    } else {
-                                        echo get_username_from_userid($message_row['user1']);
-                                    }?>
+                                <td><? if ($user_id == $message_row['user1']) {?>
+                                        <a href="profile.php?user=<?=$message_row['user2']?>"><?=get_username_from_userid($message_row['user2'])?></a>
+                                    <?} else {?>
+                                        <a href="profile.php?user=<?=$message_row['user1']?>"><?=get_username_from_userid($message_row['user1'])?></a>
+                                    <?}?>
                                 </td>
-                                <td ><?=(new DateTime($message_row['time_stamp']))->format('m/d/Y')?></td>
+                                <td ><?=time_elapsed_string($message_row['time_stamp'])?></td>
                             </tr>
     <? } ?>
                         </tbody>

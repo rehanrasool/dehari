@@ -1,4 +1,5 @@
 <?php
+    include 'server/find_dehari.php';
     session_start();
     if (!isset($_SESSION['user_id'])) {
        header("Location: index.php");
@@ -159,7 +160,7 @@
                             $notification_dehari_id = $notification_message_string[1];
         ?>
                             <p>
-                                <? echo $notification_message . ' <strong><a href="dehari_details.php?dehari_id=' . $notification_dehari_id . '">' . $notification_dehari_id . '</a></strong>'?>
+                                <? echo $notification_message . ' <strong><a href="dehari_details.php?dehari_id=' . $notification_dehari_id . '">' . get_title_from_dehari_id($notification_dehari_id) . '</a></strong>'?>
                             </p>
     <? } ?>
                 </div>

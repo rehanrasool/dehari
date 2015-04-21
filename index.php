@@ -60,7 +60,7 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <a class="navbar-brand page-scroll main_header_button" href="#"><img src="images/logo.png" alt="Dehari" height="90"> </a>
+                <a class="navbar-brand page-scroll main_header_button" href="index.php"><img src="images/logo.png" alt="Dehari" height="90"> </a>
             </div>
 
             <!-- Collect the nav links, forms, and other content for toggling -->

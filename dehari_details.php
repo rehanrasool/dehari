@@ -206,7 +206,7 @@
                     </h4><?=$dehari_budget?>
                     <h4>
                       Posted By:
-                    </h4><a href="profile.php?user=<?=$dehari_user_id?>"><?=$dehari_user_id?></a>
+                    </h4><a href="profile.php?user=<?=$dehari_user_id?>"><?=get_username_from_userid($dehari_user_id)?></a>
                 </div>
 
             

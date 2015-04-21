@@ -686,4 +686,60 @@
 		return $result_array['user_name'];
     }
 
+    function get_title_from_dehari_id ( $dehari_id ) {
+
+    	$db_dehari = mysql_connect('localhost','bluecu6_rehan','.dehari.');
+		mysql_select_db('bluecu6_dehari', $db_dehari);
+
+		$query = 'SELECT * FROM dehari_list WHERE dehari_id = ' . $dehari_id . ';';
+
+		// Perform Query
+		$result = mysql_query($query, $db_dehari);
+
+		// Check result
+		// This shows the actual query sent to MySQL, and the error. Useful for debugging.
+
+		if (!$result) {
+		    $message  = 'Invalid query: ' . mysql_error() . "\n";
+		    $message .= 'Whole query: ' . $query;
+		    die($message);
+		} else {
+
+			$result_array = mysql_fetch_assoc($result);
+
+
+		}
+		
+		return $result_array['dehari_title'];
+    }
+
+function time_elapsed_string($datetime, $full = false) {
+    $now = new DateTime;
+    $ago = new DateTime($datetime);
+    $diff = $now->diff($ago);
+
+    $diff->w = floor($diff->d / 7);
+    $diff->d -= $diff->w * 7;
+
+    $string = array(
+        'y' => 'year',
+        'm' => 'month',
+        'w' => 'week',
+        'd' => 'day',
+        'h' => 'hour',
+        'i' => 'minute',
+        's' => 'second',
+    );
+    foreach ($string as $k => &$v) {
+        if ($diff->$k) {
+            $v = $diff->$k . ' ' . $v . ($diff->$k > 1 ? 's' : '');
+        } else {
+            unset($string[$k]);
+        }
+    }
+
+    if (!$full) $string = array_slice($string, 0, 1);
+    return $string ? implode(', ', $string) . ' ago' : 'just now';
+}
+
 ?>
