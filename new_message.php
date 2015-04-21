@@ -1,5 +1,6 @@
 <?php
-	//test
+    include 'server/find_dehari.php';
+
     session_start();
     if (!isset($_SESSION['user_id'])) {
        header("Location: index.php");
@@ -19,6 +20,7 @@
 
     $notifications_count = $result_array['notifications_count'];
 ?>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -30,7 +32,7 @@
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>Dehari - Settings</title>
+    <title>Dehari - Message</title>
 
     <!-- Bootstrap Core CSS -->
     <link href="css/bootstrap.min.css" rel="stylesheet">
@@ -80,7 +82,7 @@
                         <a href="messages.php">messages</a>
                     </li>
                     <li>
-                        <a href="notifications.php">notifications</a>
+                        <a href="notifications.php">notifications<?=($notifications_count > 0)? '(' . $notifications_count . ')': '' ?></a>
                     </li>
                     <li>
                         <a data-toggle="dropdown" href="#" role="button" aria-expanded="false"><span class="glyphicon glyphicon-cog" aria-hidden="true"></span></a>
@@ -100,30 +102,44 @@
         <!-- /.container-fluid -->
     </nav>
 
-
-    <!-- Ratings & Mode Toggle Section -->
-    <section id="settings_section">
+    <!-- Main Profile Section -->
+    <section id="post_dehari_section">
         <div class="container">
-            <div class="row">
-                <div class="col-md-12">
-                    <? if ($_GET['success']) {?>
-                    <div class="error_area"><?=(($_GET['success']==1)? 'Update Successfull!': 'Update unsuccessfull!')?></div>
-                    <?}?>
-                    <form action="server/settings.php" method="post" enctype="multipart/form-data">
-                        Select profile image to upload:
-                        <input type="file" name="settings_image" id="settings_image">
-                        Enter full name:
-                        <input type="text" name="settings_full_name" id="settings_full_name">
-                        Enter Description:
-                        <input type="text" name="settings_description" id="settings_description">
-                        <input type="hidden" name="settings_user_id" value="<?=$user_id?>">
-                        <input type="submit" value="UPDATE" class="red_button" name="settings_change">
-                    </form>
-                </div>
-            </div>
-        </div> 
-    </section>
 
+            <div class="row">
+                    
+                <div class="col-md-12">
+                    <form class="form-inline" method="post" action="server/messages.php">
+                        <div class="col-md-12">
+                            <input type="text" name="message_title" value="" placeholder="Enter Title" required>
+                        </div>
+                        <div class="col-md-12">
+                        <? if (isset($_GET['recipient_id'])) {
+                            $recipient_username = get_username_from_userid($_GET['recipient_id']);
+                            ?>
+                            <input type="text" name="message_to" value="<?=$recipient_username?>" readonly>
+                        <?} else { ?>
+                            <input type="text" name="message_to" value="" placeholder="Enter Recipient User Name" required>
+                        <?}?>
+                        </div>
+                        <div class="col-md-12">
+                            <textarea placeholder="Enter Message" name="message_content" rows="15" required> </textarea>
+                        </div>
+                        <div>
+                            <input name="message_from" type="hidden" value="<?=$user_id?>">
+                            <input name="new_message" type="hidden" value="1">
+                        </div>
+                        <div class="col-md-12">
+                             <input type="submit" class="red_button" value="SEND">
+                        </div>
+                    </form>       
+                </div>
+
+            </div>
+
+        </div>
+        <!-- /.container -->
+    </section>
 
     <footer>
         <div class="container">
@@ -157,9 +173,16 @@
         </div>
     </footer>
 
-    <!-- jQuery -->
-    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js" type="text/javascript"></script>
 
+
+    <!-- jQuery -->
+    <script src="js/jquery.js"></script>
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js" type="text/javascript"></script>
+    
+    <link rel="stylesheet" href="https://code.jquery.com/ui/1.11.0/themes/smoothness/jquery-ui.css">
+    <script src="https://code.jquery.com/jquery-1.10.2.js"></script>
+    <script src="https://code.jquery.com/ui/1.11.0/jquery-ui.js"></script>
+    <script src="js/post_dehari.js"></script>
     <!-- Bootstrap Core JavaScript -->
     <script src="js/bootstrap.min.js"></script>
 
