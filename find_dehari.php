@@ -11,7 +11,6 @@
         mysql_select_db('bluecu6_dehari', $db_dehari);
 
     $query = 'SELECT COUNT(*) as notifications_count FROM dehari_notifications WHERE notification_read = 0 AND notification_user_id = ' . $user_id;
-
     // Perform Query
     $result = mysql_query($query, $db_dehari);
     $result_array = mysql_fetch_assoc($result);
@@ -78,7 +77,7 @@
                         <a href="post_dehari.php">post dehari</a>
                     </li>
                     <li>
-                        <a href="#">messages</a>
+                        <a href="messages.php">messages</a>
                     </li>
                     <li>
                         <a href="notifications.php">notifications<?=($notifications_count > 0)? '(' . $notifications_count . ')': '' ?></a>
